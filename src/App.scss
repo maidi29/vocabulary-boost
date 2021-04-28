@@ -1,0 +1,69 @@
+.sky {
+  width: 100%;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+// create box shadows at random x/y values (max value 3500) with random blur radius (max value 3)
+@function box-shadow($stars) {
+  $boxshadow: ();
+  @for $i from 1 to $stars {
+    $boxshadow: append($boxshadow, (random(3500) + 0px) (random(3500) + 0px) (random(3) + 0px) #FFFDED, comma);
+  }
+  @return $boxshadow;
+}
+
+// create random number of stars (max number ist set)
+$boxshadow-large: box-shadow(random(400));
+$boxshadow-medium: box-shadow(random(450));
+$boxshadow-small: box-shadow(random(500));
+
+@mixin star-properties($size, $shadow, $animation, $animation-duration) {
+  height: $size;
+  width: $size;
+  box-shadow: $shadow;
+  animation: $animation $animation-duration infinite;
+}
+
+.stars {
+  background: transparent;
+  border-radius: 3px;
+
+  &.large {
+    @include star-properties(3px, $boxshadow-large, blink-large, 7s);
+  }
+  &.medium {
+    @include star-properties(2px, $boxshadow-medium, blink-medium, 5s);
+  }
+  &.small {
+    @include star-properties(1px, $boxshadow-small, blink-small, 3s);
+  }
+}
+
+@mixin blink($name, $shadow) {
+  @keyframes #{$name} {
+    0% {
+      box-shadow: $shadow;
+    }
+    70% {
+      //decide for each star to either set to transparent or default color (if it blinks or not)
+      $colors: '#FFFDED', 'transparent';
+      $stars: $shadow;
+      @for $i from 1 to length($stars) {
+        $star: set-nth(nth($stars, $i), 4, unquote(nth($colors, random(length($colors)))));
+        $stars: set-nth($stars, $i, $star);
+      }
+      box-shadow: $stars;
+    }
+    100% {
+      box-shadow: $shadow;
+    }
+  }
+}
+
+@include blink(blink-small, $boxshadow-small);
+@include blink(blink-medium, $boxshadow-medium);
+@include blink(blink-large, $boxshadow-large);
+
+
+

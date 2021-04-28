@@ -1,0 +1,23 @@
+{
+  "name": "Exoplanet New Tab",
+  "description": "Explore a new confirmed exoplanet in every new tab with hypothetical visualization and interesting planet facts.",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "permissions": [
+    "storage",
+    "https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+    "https://exoplanets.nasa.gov/api/v1/planets/"
+  ]
+}
