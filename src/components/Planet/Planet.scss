@@ -31,7 +31,7 @@ $planet-height: var(--planet-height, 50vh);
     z-index: -1;
     background-size: cover;
     background-image: $planet-texture;
-    transform: rotate($planet-tilt);
+    transform: scale(1.01) rotate($planet-tilt);
     animation: planetRotate $rotate-speed linear infinite;
     border: 1px solid black;
   }

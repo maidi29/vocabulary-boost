@@ -1,5 +1,5 @@
 {
-  "name": "exoplanet-hunting-newtab",
+  "name": "exoplanet-newtab",
   "version": "0.1.0",
   "dependencies": {
     "@react-hook/resize-observer": "^1.2.0",

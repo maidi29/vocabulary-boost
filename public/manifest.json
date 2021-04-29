@@ -1,7 +1,7 @@
 {
   "name": "Exoplanet New Tab",
   "description": "Explore a new confirmed exoplanet in every new tab with hypothetical visualization and interesting planet facts.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "manifest_version": 2,
   "icons": {
     "16": "icon16.png",

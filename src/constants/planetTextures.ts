@@ -2,18 +2,18 @@ import {PlanetTypes} from "../models/exoplanet.model";
 
 export const PlanetTextures = {
     [PlanetTypes.GAS_GIANT]: [
-        'saturn.jpg', 'venus.jpg', 'neptune.jpg'
+        'saturn.webp', 'venus.webp', 'neptune.webp','neptunelight.webp','saturnlight.webp','venuslight.webp'
     ],
     [PlanetTypes.NEPTUNE_LIKE]: [
-        'saturn.jpg', 'venus.jpg', 'neptune.jpg'
+        'saturn.webp', 'venus.webp', 'neptune.webp','neptunelight.webp','saturnlight.webp','venuslight.webp'
     ],
     [PlanetTypes.SUPER_EARTH]: [
-        'ceres.jpg', 'eris.jpg', 'haumea.jpg', 'makemake.jpg'
+        'neptunelight.webp','saturnlight.webp','venuslight.webp'
     ],
     [PlanetTypes.TERRESTRIAL]: [
-        'ceres.jpg', 'eris.jpg', 'haumea.jpg', 'makemake.jpg'
+        'neptunelight.webp','saturnlight.webp','venuslight.webp'
     ],
     [PlanetTypes.UNKNOWN]: [
-        'ceres.jpg', 'eris.jpg', 'haumea.jpg', 'makemake.jpg', 'saturn.jpg', 'venus.jpg', 'neptune.jpg'
+        'ceres.webp', 'eris.webp', 'haumea.webp', 'makemake.webp', 'saturn.webp', 'venus.webp', 'neptune.webp', 'neptunelight.webp','saturnlight.webp','venuslight.webp'
     ]
 }
