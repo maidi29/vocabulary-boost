@@ -1,8 +1,15 @@
 # Exoplanet New Tab 🪐
+![Banner](https://github.com/maidi29/exoplanet-new-tab/blob/main/sources%20for%20webstore%20entry/1400x560.png?raw=true)
 
 Chrome Extension that displays a new confirmed exoplanet in every new tab with hypothetical visualization and interesting planet facts.
 
 Use this Extension: https://chrome.google.com/webstore/detail/exoplanet-new-tab/lomgeabjcgmlehekkdofbmgedkapgpoe
+
+## Examples
+![Example 1](https://github.com/maidi29/exoplanet-new-tab/blob/main/sources%20for%20webstore%20entry/screenshot.png?raw=true)
+![Example 2](https://github.com/maidi29/exoplanet-new-tab/blob/main/sources%20for%20webstore%20entry/screenshot-2.png?raw=true)
+![Example 3](https://github.com/maidi29/exoplanet-new-tab/blob/main/sources%20for%20webstore%20entry/screenshot-3.png?raw=true)
+![Example 4](https://github.com/maidi29/exoplanet-new-tab/blob/main/sources%20for%20webstore%20entry/screenshot-4.png?raw=true)
 
 ## Available Scripts
 
