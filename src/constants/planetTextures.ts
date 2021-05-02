@@ -8,10 +8,10 @@ export const PlanetTextures = {
         'saturn.webp', 'venus.webp', 'neptune.webp','neptunelight.webp','saturnlight.webp','venuslight.webp'
     ],
     [PlanetTypes.SUPER_EARTH]: [
-        'neptunelight.webp','saturnlight.webp','venuslight.webp'
+        'ceres.webp', 'eris.webp', 'haumea.webp', 'makemake.webp'
     ],
     [PlanetTypes.TERRESTRIAL]: [
-        'neptunelight.webp','saturnlight.webp','venuslight.webp'
+        'ceres.webp', 'eris.webp', 'haumea.webp', 'makemake.webp'
     ],
     [PlanetTypes.UNKNOWN]: [
         'ceres.webp', 'eris.webp', 'haumea.webp', 'makemake.webp', 'saturn.webp', 'venus.webp', 'neptune.webp', 'neptunelight.webp','saturnlight.webp','venuslight.webp'
