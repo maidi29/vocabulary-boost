@@ -5,7 +5,7 @@ $planet-texture: var(--planet-texture);
 $planet-tilt: var(--planet-tilt, 25deg);
 $rotate-speed: var(--rotate-speed, 30s);
 $shadow-width: var(--shadow-width, -90px);
-$planet-width: var(--planet-width, 300px);
+$planet-width: var(--planet-width, 50vh);
 $planet-height: var(--planet-height, 50vh);
 
 @keyframes planetRotate {
