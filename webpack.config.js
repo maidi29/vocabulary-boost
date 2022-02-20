@@ -7,7 +7,10 @@ module.exports = {
         filename: "background.js"
     },
     resolve: {
-        extensions: ['.ts', '.tsx']
+        extensions: ['.ts', '.tsx'],
+        fallback: {
+            "buffer": require.resolve("buffer/")
+        }
     },
     module:{
         rules:[{

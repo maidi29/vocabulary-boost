@@ -1,11 +1,5 @@
-import {fetchExoplanets} from "./services/fetch-and-process";
-
-chrome.runtime.onStartup.addListener(() => {
-    fetchExoplanets();
-});
-
-chrome.runtime.onInstalled.addListener(() => {
-    fetchExoplanets();
+chrome.browserAction.onClicked.addListener(function(tab) {
+    chrome.tabs.create({url: chrome.extension.getURL('index.html')});
 });
 
 export {};

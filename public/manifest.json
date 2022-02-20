@@ -1,23 +1,27 @@
 {
-  "name": "Exoplanet New Tab",
-  "description": "Explore a new confirmed exoplanet in every new tab with hypothetical visualization and interesting planet facts.",
-  "version": "0.2.1",
-  "manifest_version": 2,
+  "name": "Vocabulary Boost",
+  "description": "Select unknown words in a foreign language that you're learning and get immediate translations and the option to add the word to your trainsing set. Later you can go through all your newly added words and train with them. This way you will increase your vocabulary base in a natural way.",
+  "version": "0.0.1",
+  "manifest_version": 3,
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
     "128": "icon128.png"
   },
-  "chrome_url_overrides": {
-    "newtab": "index.html"
-  },
   "background": {
-    "scripts": ["background.js"],
-    "persistent": false
+    "service_worker": [
+      "background.js"
+    ]
+  },
+  "action": {
+    "default_title": "Train your saved vocabulary"
   },
   "permissions": [
     "storage",
-    "https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
-    "https://exoplanets.nasa.gov/api/v1/planets/"
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://api-free.deepl.com"
   ]
 }
