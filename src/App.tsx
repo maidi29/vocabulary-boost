@@ -3,6 +3,8 @@ import './App.scss';
 
 export const App = () => {
 
+    console.log("inside app");
+
     /*Todo:
     - Nutzer im options tab Sprache einstellen lassen
     - Auf Selection (mouseup) reagieren und Tooltip anzeigen: window.getSelection().toString(), selection.getRangeAt(0).getBoundingClientRect();

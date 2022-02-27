@@ -1,10 +1,13 @@
 const path = require('path');
 module.exports = {
     mode: "production",
-    entry: "./src/background.ts",
+    entry: {
+        background: './src/background.ts',
+        contentscript: './src/contentscript.ts'
+    },
     output: {
-        path: path.resolve(__dirname, "build"),
-        filename: "background.js"
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'build')
     },
     resolve: {
         extensions: ['.ts', '.tsx'],

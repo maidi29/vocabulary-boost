@@ -9,19 +9,21 @@
     "128": "icon128.png"
   },
   "background": {
-    "service_worker": [
-      "background.js"
+    "service_worker": "background.js"
+  },
+  "content_scripts": [{
+    "matches": [ "<all_urls>" ],
+    "all_frames": true,
+    "js": [
+      "contentscript.js"
     ]
-  },
-  "action": {
-    "default_title": "Train your saved vocabulary"
-  },
+  }],
+  "action": {},
   "permissions": [
     "storage",
-    "activeTab",
     "scripting"
   ],
   "host_permissions": [
-    "https://api-free.deepl.com"
+    "https://api-free.deepl.com/*"
   ]
 }
