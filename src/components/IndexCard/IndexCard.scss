@@ -1,0 +1,26 @@
+.card {
+  height: 14rem;
+  width: 50vw;
+  margin: auto;
+  position: relative;
+  font-family: 'Indie Flower', cursive;
+  font-size: 2rem;
+  perspective: 50vw;
+
+  .content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+    background-image:
+            linear-gradient(180deg, white 3rem, #F0A4A4 calc(3rem), #F0A4A4 calc(3rem + 2px), transparent 1px),
+            repeating-linear-gradient(0deg, transparent, transparent 1.5rem, #DDD 1px, #DDD calc(1.5rem + 1px));
+    box-shadow: 1px 1px 3px rgba(0,0,0,.25);
+
+    &.flip {
+      transform: rotateY( 180deg ) ;
+      transition: transform 0.5s;
+    }
+  }
+}

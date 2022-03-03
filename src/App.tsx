@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import './App.scss';
+import {IndexCard} from "./components/IndexCard/IndexCard";
+import {IndexCardSide, Variants} from "./components/IndexCard/IndexCardSide/IndexCardSide";
+import {CardContext, CardContextProvider, CardStates, withCardContext} from "./components/IndexCard/CardContext";
 
-export const App = () => {
-
-    console.log("inside app");
+export const AppContainer = () => {
+    const { state, setState } = useContext(CardContext);
 
     /*Todo:
     - Nutzer im options tab Sprache einstellen lassen
@@ -20,8 +22,20 @@ export const App = () => {
 
      */
   return (
-    <div>
-      Hello
+      <div>
+        <IndexCard flipped={state !== CardStates.INITIAL}>
+                <IndexCardSide variant={Variants.FRONT}>Vokabel</IndexCardSide>
+                <IndexCardSide variant={Variants.BACK}>Übersetzung</IndexCardSide>
+        </IndexCard>
+        <IndexCard>
+            <IndexCardSide variant={Variants.FRONT}>
+                <input placeholder="Translation"/>
+                <button onClick={()=>setState(CardStates.TO_VERIFY)}>Verify!</button>
+            </IndexCardSide>
+        </IndexCard>
     </div>
+
   );
 }
+
+export const App = withCardContext(AppContainer);

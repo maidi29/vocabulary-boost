@@ -1,15 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Raleway&display=swap');
+
+html {
+  font-size: 16px;
+}
 
 body {
   margin: 0;
-  font-family: 'Rajdhani', 'Roboto', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: #01000a; /* Old browsers */
-  background: -moz-linear-gradient(top,  #01000a 0%, #01040c 100%);
-  background: -webkit-linear-gradient(top,  #01000a 0%,#01040c 100%);
-  background: linear-gradient(to bottom,  #01000a 0%,#01040c 100%);
-  font-size: 16px;
+  font-family: 'Raleway', sans-serif;
 }
 
 a {
