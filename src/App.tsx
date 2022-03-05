@@ -2,40 +2,56 @@ import React, {useContext} from 'react';
 import './App.scss';
 import {IndexCard} from "./components/IndexCard/IndexCard";
 import {IndexCardSide, Variants} from "./components/IndexCard/IndexCardSide/IndexCardSide";
-import {CardContext, CardContextProvider, CardStates, withCardContext} from "./components/IndexCard/CardContext";
+import {PractiseContext, PractiseContextProvider, PractiseStates, withPractiseContext} from "./PractiseContext";
 
 export const AppContainer = () => {
-    const { state, setState } = useContext(CardContext);
+    const { state, setState, word, setWord } = useContext(PractiseContext);
 
     /*Todo:
     - Nutzer im options tab Sprache einstellen lassen
-    - Auf Selection (mouseup) reagieren und Tooltip anzeigen: window.getSelection().toString(), selection.getRangeAt(0).getBoundingClientRect();
-    - Im Tooltip Übersetzung anzeigen (API Call über Message und dann im background script?? (Zeichenanzahl beschränken?)
-    chrome.runtime.sendMessage({type:'request_password'});
-    background.js: chrome.runtime.onMessage.addListener(function(request) { if (request.type === 'request_password') {
-    - Button zum Hinzufügen des Worts zum Training Set und dann im storage speichern (ggf. ganzen Satz als Beispiel speichern?)
-    chrome.storage.sync.set({ "yourBody": "myBody" }, function(){ //  A data saved callback omg so fancy});
-    chrome.storage.sync.get(["yourBody"], function(items){//  items = [ { "yourBody": "myBody" } ]});
-    - index.html (on Click auf icon) dort Trainingsset aus dem Storage abrufen
+    - Zeichenanzahl beschränken
+    - Buttons: add to TrainingSet + Dismiss
+    - BeispielSatz übersetzen lassen
     - Wörter die der Nutzer richtig übersetzen kann im Archiv abspeichern, die anderen bleiben im Trainingsset
     - immer anzeigen wie viele Wörter schon gelernt wurden
-
+    - Wörter aus dem Trainingset in zufälliger Reihenfolge anzeigen
+    - Anzeigen wie viele Wörter im Trainingset sind.
+    - Möglichkeit zum Lernen aus dem Archiv geben
+    - Template für Overlay?
      */
+
+    const switchToNextWord = () => {
+        chrome.storage.sync.get(['trainingSet'], (result) => {console.log(result)});
+        setWord({
+            sentence: "A mouse is in the house.",
+            sentenceTranslation: "Im Haus ist eine Maus.",
+            translation: "Maus",
+            word: "Mouse",
+            occurance: "https://skjdfnskjdfn"
+        })
+    }
   return (
       <div>
-        <IndexCard flipped={state !== CardStates.INITIAL}>
-                <IndexCardSide variant={Variants.FRONT}>Vokabel</IndexCardSide>
-                <IndexCardSide variant={Variants.BACK}>Übersetzung</IndexCardSide>
+        <IndexCard flipped={state !== PractiseStates.INITIAL}>
+                <IndexCardSide variant={Variants.FRONT}>
+                    <div>{word.word}</div>
+                    <div>{word.sentence}</div>
+                </IndexCardSide>
+                <IndexCardSide variant={Variants.BACK}>
+                    <div>{word.translation}</div>
+                    <div>{word.sentenceTranslation}</div>
+                </IndexCardSide>
         </IndexCard>
         <IndexCard>
             <IndexCardSide variant={Variants.FRONT}>
                 <input placeholder="Translation"/>
-                <button onClick={()=>setState(CardStates.TO_VERIFY)}>Verify!</button>
+                <button onClick={()=>setState(PractiseStates.TO_VERIFY)}>Verify!</button>
             </IndexCardSide>
         </IndexCard>
+          <button onClick={switchToNextWord}>Next word</button>
     </div>
 
   );
 }
 
-export const App = withCardContext(AppContainer);
+export const App = withPractiseContext(AppContainer);

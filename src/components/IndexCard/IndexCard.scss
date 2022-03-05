@@ -21,6 +21,10 @@
     &.flip {
       transform: rotateY( 180deg ) ;
       transition: transform 0.5s;
+
+      &:hover {
+        transform: rotateY( 0deg ) ;
+      }
     }
   }
 }

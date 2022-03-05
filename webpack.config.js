@@ -2,8 +2,8 @@ const path = require('path');
 module.exports = {
     mode: "production",
     entry: {
-        background: './src/background.ts',
-        contentscript: './src/contentscript.ts'
+        background: './src/scripts/background.ts',
+        contentscript: './src/scripts/contentscript.ts'
     },
     output: {
         filename: '[name].js',
