@@ -1,5 +1,7 @@
 import {Word} from "../PractiseContext";
 
+const sentenceCloser = new RegExp('[!?.]')
+
 const firstIndex = (str: string, regex: RegExp): number => {
     const match = str.match(regex);
     return match ? str.indexOf(match[0]) : -1;
@@ -26,28 +28,28 @@ document.addEventListener('dblclick', ()=> {
         const selection = window.getSelection();
         const word = selection?.toString().split(' ')[0];
         const range = selection?.getRangeAt(0);
-        const position = range?.getBoundingClientRect();
-        const startContainer = range?.startContainer as any;
-        const sentenceCloser = new RegExp('[!?.]')
+        const boundingRect = range?.getBoundingClientRect();
+
+        const startContainer = range?.startContainer as Text;
 
         const textBefore = startContainer.wholeText.substring(0, range?.startOffset);
         const sentenceBefore = textBefore.substring(lastIndex(textBefore, sentenceCloser)+1).trim();
 
-        const textAfter = startContainer.wholeText.substring(range?.endOffset);
+        const textAfter = startContainer.wholeText.substring(range?.endOffset || 0);
         const firstSentenceCloser = firstIndex(textAfter, sentenceCloser);
         const sentenceAfter = textAfter.substring(0, firstSentenceCloser !== -1 ? firstSentenceCloser+1 : undefined).trim();
-        const sentence = sentenceBefore + ' ' + word + ' ' + sentenceAfter
+        const sentence = [sentenceBefore, word, sentenceAfter].join(' ');
 
 
-        if (word && word.length < 50 && position) {
-            requestTranslation(word, sentence, position);
+        if (word && word.length < 50 && boundingRect) {
+            requestTranslation(word, sentence, boundingRect);
         } else {
             console.log('Error with selection');
         }
     }
 );
 
-const requestTranslation = (word: string, sentence: string, position: DOMRect) => {
+const requestTranslation = (word: string, sentence: string, boundingRect: DOMRect) => {
     chrome.runtime.sendMessage({word: word}, (response) => {
         const translations = response?.translations.map((translation: any) => translation.text).join(", ");
 
@@ -58,11 +60,11 @@ const requestTranslation = (word: string, sentence: string, position: DOMRect) =
             translation: translations,
             word
         })
-        showTooltip(translations, position);
+        showTooltip(translations, boundingRect);
     })
 }
 
-const showTooltip = (message: string, position: DOMRect) => {
+const showTooltip = (message: string, boundingRect: DOMRect) => {
     const id = 'vocabulary-boost-overlay';
     document.getElementById(id)?.remove();
 
@@ -70,8 +72,8 @@ const showTooltip = (message: string, position: DOMRect) => {
     tooltip.setAttribute('id', id);
     tooltip.setAttribute('style', `
         position: absolute; 
-        top: ${position.top + window.scrollY}px; 
-        left: ${position.left}px; 
+        top: ${boundingRect.top + window.scrollY}px; 
+        left: ${boundingRect.left}px; 
         background: white; 
         transform: translate(0, -100%); 
         padding: 1rem;
