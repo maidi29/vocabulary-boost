@@ -18,7 +18,7 @@ export const IndexCard = ({children, flipped = false}: IndexCardProps): JSX.Elem
     return (
         <div className="card">
             <div className={`content ${flipped && 'flip'}`}>
-                {children}
+                    {children}
             </div>
         </div>
     );

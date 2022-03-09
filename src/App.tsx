@@ -86,12 +86,12 @@ export const AppContainer = () => {
             case PractiseStates.WRONG:
                 return <>
                     <div className={'wrong'}>{input}</div>
-                    <div>The word stays in the training set and will be presented later again.</div>
+                    <div className="text">The word stays in the training set and will be presented later again.</div>
                 </>;
             case PractiseStates.CORRECT:
                 return <>
                     <div className={'correct'}>{input}</div>
-                    <div>🥳 Yey! The word is added to the archive.</div>
+                    <div className="text">🥳 Yey! The word is added to the archive.</div>
                 </>;
             case PractiseStates.TO_VERIFY:
                 return renderInput();
@@ -106,12 +106,13 @@ export const AppContainer = () => {
                 <IndexCard flipped={state !== PractiseStates.INITIAL}>
                     <IndexCardSide variant={Variants.FRONT}>
                         <div>{word.word}</div>
-                        <div>{word.sentence}</div>
-                        <div>Learned at <a href={word.occurance}>{word.occurance}</a></div>
+                        <div className="text">{word.sentence}</div>
+                        <div className="reference">Learned at <a href={word.occurance}>{word.occurance}</a></div>
                     </IndexCardSide>
                     <IndexCardSide variant={Variants.BACK}>
                         <div>{word.translation}</div>
-                        <div>{word.sentenceTranslation}</div>
+                        <div className="text">{word.sentenceTranslation}</div>
+                        <div className="reference">Learned at <a href={word.occurance}>{word.occurance}</a></div>
                     </IndexCardSide>
                 </IndexCard>
                 <IndexCard>
