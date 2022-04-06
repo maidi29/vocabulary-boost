@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react';
-import  './IndexCardSide.scss';
+import styles from './IndexCardSide.module.scss';
+import classnames from "classnames";
 
 export enum Variants {
     FRONT = 'front',
@@ -14,7 +15,7 @@ export interface IndexCardSideProps {
 export const IndexCardSide = ({children, variant}: IndexCardSideProps): JSX.Element => {
 
     return (
-        <div className={variant}>
+        <div className={classnames(styles.content, styles[variant])}>
                 {children}
         </div>
     );

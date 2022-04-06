@@ -1,15 +1,17 @@
 # Exoplanet New Tab 🪐
-![Banner](https://github.com/maidi29/exoplanet-new-tab/blob/main/sources%20for%20webstore%20entry/1400x560.png?raw=true)
+![Banner](https://github.com/maidi29/vocabulary-boost/blob/main/sources%20for%20webstore%20entry/1400x560.png?raw=true)
 
-Chrome Extension that displays a new confirmed exoplanet in every new tab with hypothetical visualization and interesting planet facts.
+Chrome Extension that translates english words on every website on double click and lets you add these words to your training set.
 
-Use this Extension: https://chrome.google.com/webstore/detail/exoplanet-new-tab/lomgeabjcgmlehekkdofbmgedkapgpoe
+You can then practise these words with index cards.
+
+Use this Extension: [Link]
 
 ## Examples
-![Example 1](https://github.com/maidi29/exoplanet-new-tab/blob/main/sources%20for%20webstore%20entry/screenshot.png?raw=true)
-![Example 2](https://github.com/maidi29/exoplanet-new-tab/blob/main/sources%20for%20webstore%20entry/screenshot-2.png?raw=true)
-![Example 3](https://github.com/maidi29/exoplanet-new-tab/blob/main/sources%20for%20webstore%20entry/screenshot-3.png?raw=true)
-![Example 4](https://github.com/maidi29/exoplanet-new-tab/blob/main/sources%20for%20webstore%20entry/screenshot-4.png?raw=true)
+![Example 1](https://github.com/maidi29/vocabulary-boost/blob/main/sources%20for%20webstore%20entry/screenshot.png?raw=true)
+![Example 2](https://github.com/maidi29/vocabulary-boost/blob/main/sources%20for%20webstore%20entry/screenshot-2.png?raw=true)
+![Example 3](https://github.com/maidi29/vocabulary-boost/blob/main/sources%20for%20webstore%20entry/screenshot-3.png?raw=true)
+![Example 4](https://github.com/maidi29/vocabulary-boost/blob/main/sources%20for%20webstore%20entry/screenshot-4.png?raw=true)
 
 ## Available Scripts
 

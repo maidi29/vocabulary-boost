@@ -6,12 +6,15 @@
   font-family: 'Indie Flower', cursive;
   font-size: 2rem;
   perspective: 50vw;
+  @media screen and (max-width: 1047px) {
+    perspective: 100vw;
+  }
 
-  &:hover {
+  /*&:hover {
     .flip.content {
       transform: rotateY( 0deg ) ;
     }
-  }
+  }*/
 
   .content {
     position: absolute;

@@ -1,5 +1,6 @@
+import classnames from 'classnames';
 import React, {useContext, useEffect, useState} from 'react';
-import './App.scss';
+import styles from './App.module.scss';
 import {IndexCard} from "./components/IndexCard/IndexCard";
 import {IndexCardSide, Variants} from "./components/IndexCard/IndexCardSide/IndexCardSide";
 import {PractiseContext, PractiseStates, withPractiseContext} from "./PractiseContext";
@@ -24,6 +25,7 @@ export const AppContainer = () => {
     const [ index, setIndex ] = useState(0);
     const [ counter, setCounter ] = useState(0);
     const [input, setInput] = useState('');
+    const [flipped, setFlipped] = useState(false);
 
 
     chrome.storage?.sync?.get(['trainingSet'], (result) => {
@@ -69,15 +71,17 @@ export const AppContainer = () => {
     }, [index]);
 
     useEffect(() => {
-        console.log('state: ' , state);
+            setFlipped(state !== PractiseStates.INITIAL);
     }, [state]);
 
     const renderInput = () =>
-        <><input placeholder="Translation" value={input} onInput={e => setInput((e.target as HTMLInputElement).value)}/>
-            <button onClick={()=>{
-                setState(PractiseStates.TO_VERIFY);
-                setState(input.trim().toLowerCase() === word.translation.toLowerCase() ? PractiseStates.CORRECT : PractiseStates.WRONG);
-            }}>Verify!</button></>;
+        <form className={styles.inputContainer} onSubmit={()=>{
+            setState(PractiseStates.TO_VERIFY);
+            setState(input.trim().toLowerCase() === word.translation.toLowerCase() ? PractiseStates.CORRECT : PractiseStates.WRONG);
+        }}>
+            <input className={styles.input} placeholder="Translation" value={input} onInput={e => setInput((e.target as HTMLInputElement).value)}/>
+            <button className={styles.button} type="submit">{'>'}</button>
+        </form>;
 
     const renderCard = () => {
         switch (state) {
@@ -85,13 +89,15 @@ export const AppContainer = () => {
                 return renderInput();
             case PractiseStates.WRONG:
                 return <>
-                    <div className={'wrong'}>{input}</div>
-                    <div className="text">The word stays in the training set and will be presented later again.</div>
+                    <div className={styles.wrong}>{input}</div>
+                    <div className={styles.emoji}>😔</div>
+                    <div className={styles.comment}>The word stays in the training set and will be presented later again.</div>
                 </>;
             case PractiseStates.CORRECT:
                 return <>
-                    <div className={'correct'}>{input}</div>
-                    <div className="text">🥳 Yey! The word is added to the archive.</div>
+                    <div className={styles.correct}>{input}</div>
+                    <div className={styles.emoji}>🥳</div>
+                    <div className={styles.comment}> Yey! The word is added to the archive.</div>
                 </>;
             case PractiseStates.TO_VERIFY:
                 return renderInput();
@@ -99,20 +105,22 @@ export const AppContainer = () => {
     }
 
   return (
-      <div className="app-container">
+      <div className={styles.appContainer}>
           <h1>Practise the words you learned while browsing</h1>
           <h2>Total number of learned words: {counter}</h2>
-          <div className="card-container">
-                <IndexCard flipped={state !== PractiseStates.INITIAL}>
+          <div className={styles.cardContainer}>
+                <IndexCard flipped={flipped}>
                     <IndexCardSide variant={Variants.FRONT}>
                         <div>{word.word}</div>
-                        <div className="text">{word.sentence}</div>
-                        <div className="reference">Learned at <a href={word.occurance}>{word.occurance}</a></div>
+                        <div className={styles.text}>{word.sentence}</div>
+                        <div className={styles.reference}>Learned at <a href={word.occurance}>{word.occurance}</a></div>
+                        {state !== PractiseStates.INITIAL && <button onClick={()=>setFlipped(!flipped)}>Flip</button>}
                     </IndexCardSide>
                     <IndexCardSide variant={Variants.BACK}>
-                        <div>{word.translation}</div>
-                        <div className="text">{word.sentenceTranslation}</div>
-                        <div className="reference">Learned at <a href={word.occurance}>{word.occurance}</a></div>
+                        <div className={classnames(state === PractiseStates.WRONG && styles.wrong, state === PractiseStates.CORRECT && styles.correct)}>{word.translation}</div>
+                        <div className={styles.text}>{word.sentenceTranslation}</div>
+                        <div className={styles.reference}>Learned at <a href={word.occurance}>{word.occurance}</a></div>
+                        <button onClick={()=>setFlipped(!flipped)}>Flip</button>
                     </IndexCardSide>
                 </IndexCard>
                 <IndexCard>
