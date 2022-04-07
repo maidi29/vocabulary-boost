@@ -1,9 +1,11 @@
+@use 'theme';
+
 .appContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   padding: 1rem;
   .cardContainer{
     display:flex;
@@ -24,21 +26,44 @@
   .comment, .reference {
     margin-top: auto;
     font-size: 1rem;
-    font-family: 'Raleway', sans-serif;
+    font-family: theme.$fontFamily;
+    font-weight: normal;
+    letter-spacing: normal;
+  }
+
+  .reference {
+    padding-right: 2rem;
   }
 
   .emoji {
     text-align: center;
     font-size: 3rem;
-    line-height: 1;
   }
 
   .correct {
-    color: green;
+    color: theme.$colorCorrect;
   }
 
   .wrong {
-    color: red;
+    color: theme.$colorIncorrect;
+  }
+
+  .flipButton {
+    position: absolute;
+    bottom:1rem;
+    right: 1rem;
+    width: min-content;
+    color: theme.$colorTertiary;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    font-size: 2rem;
+    cursor:pointer;
+    font-weight: bold;
+    font-family: theme.$fontFamily;
+    &:hover {
+      background: lighten(theme.$colorSecondary,10);
+    }
   }
 
   .inputContainer {
@@ -49,20 +74,17 @@
       border: 2px solid #ccc;
       border-radius: 0;
       width: 100%;
-      font-family: 'Indie Flower', cursive;
+      font-family: theme.$fontFamilyHand;
+      letter-spacing: 1px;
       font-size: 1.5rem;
       background: transparent;
-      line-height: 1;
+      font-weight: bold;
     }
     .button {
       position: absolute;
       right:0;
       height: 100%;
-      background: aquamarine;
-      border: 0;
-      cursor: pointer;
       padding: 0 1rem;
-      color: white;
       font-size: 2rem;
     }
   }

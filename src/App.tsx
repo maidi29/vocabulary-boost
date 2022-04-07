@@ -4,6 +4,13 @@ import styles from './App.module.scss';
 import {IndexCard} from "./components/IndexCard/IndexCard";
 import {IndexCardSide, Variants} from "./components/IndexCard/IndexCardSide/IndexCardSide";
 import {PractiseContext, PractiseStates, withPractiseContext} from "./PractiseContext";
+import {Button} from "./components/Button/Button";
+import {
+    getFromStorage,
+    removeFromTrainingSet,
+    updateArchiveInStorage,
+    updateLearnedWordsInStorage
+} from "./scripts/util";
 
 export const AppContainer = () => {
     const { state, setState, word, setWord } = useContext(PractiseContext);
@@ -27,15 +34,20 @@ export const AppContainer = () => {
     const [input, setInput] = useState('');
     const [flipped, setFlipped] = useState(false);
 
-
-    chrome.storage?.sync?.get(['trainingSet'], (result) => {
+    getFromStorage('trainingSet',(result) => {
         setTrainingSet(result.trainingSet);
         setWord(result.trainingSet[index]);
         console.log(result);
     });
-
+    getFromStorage('counter',(result) => {
+        setCounter(result.counter);
+    });
     setWord(trainingSet[index]);
 
+    const updateLearnedWords = () => {
+        setCounter(counter +1);
+        updateLearnedWordsInStorage(1);
+    }
 
 
     /*Todo:
@@ -52,7 +64,6 @@ export const AppContainer = () => {
      */
 
     const switchToNextWord = () => {
-        console.log('switch', index);
         const newIndex = index + 1;
         if (newIndex < trainingSet.length) {
             setIndex(newIndex);
@@ -72,6 +83,11 @@ export const AppContainer = () => {
 
     useEffect(() => {
             setFlipped(state !== PractiseStates.INITIAL);
+            if(state === PractiseStates.CORRECT) {
+                updateLearnedWords();
+                updateArchiveInStorage(word);
+                removeFromTrainingSet(word);
+            }
     }, [state]);
 
     const renderInput = () =>
@@ -79,8 +95,8 @@ export const AppContainer = () => {
             setState(PractiseStates.TO_VERIFY);
             setState(input.trim().toLowerCase() === word.translation.toLowerCase() ? PractiseStates.CORRECT : PractiseStates.WRONG);
         }}>
-            <input className={styles.input} placeholder="Translation" value={input} onInput={e => setInput((e.target as HTMLInputElement).value)}/>
-            <button className={styles.button} type="submit">{'>'}</button>
+            <input className={styles.input} placeholder="Translation🖊️" value={input} onInput={e => setInput((e.target as HTMLInputElement).value)}/>
+            <Button className={styles.button} type="submit">{'>'}</Button>
         </form>;
 
     const renderCard = () => {
@@ -114,13 +130,13 @@ export const AppContainer = () => {
                         <div>{word.word}</div>
                         <div className={styles.text}>{word.sentence}</div>
                         <div className={styles.reference}>Learned at <a href={word.occurance}>{word.occurance}</a></div>
-                        {state !== PractiseStates.INITIAL && <button onClick={()=>setFlipped(!flipped)}>Flip</button>}
+                        {state !== PractiseStates.INITIAL && <button className={styles.flipButton} onClick={()=>setFlipped(!flipped)} title="Flip">↩</button>}
                     </IndexCardSide>
                     <IndexCardSide variant={Variants.BACK}>
                         <div className={classnames(state === PractiseStates.WRONG && styles.wrong, state === PractiseStates.CORRECT && styles.correct)}>{word.translation}</div>
                         <div className={styles.text}>{word.sentenceTranslation}</div>
                         <div className={styles.reference}>Learned at <a href={word.occurance}>{word.occurance}</a></div>
-                        <button onClick={()=>setFlipped(!flipped)}>Flip</button>
+                        <button className={styles.flipButton} onClick={()=>setFlipped(!flipped) } title="Flip">↩</button>
                     </IndexCardSide>
                 </IndexCard>
                 <IndexCard>
@@ -129,7 +145,7 @@ export const AppContainer = () => {
                     </IndexCardSide>
                 </IndexCard>
           </div>
-          <button onClick={switchToNextWord}>Next word</button>
+          <Button onClick={switchToNextWord}>Next word</Button>
     </div>
 
   );

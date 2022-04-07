@@ -1,4 +1,5 @@
 import {Word} from "../PractiseContext";
+import {addToStorage, getFromStorage, updateTrainingSetInStorage} from "./util";
 
 const sentenceCloser = new RegExp('[!?.]')
 
@@ -10,17 +11,6 @@ const firstIndex = (str: string, regex: RegExp): number => {
 const lastIndex = (str: string, regex: RegExp): number => {
     const match = str.match(regex);
     return match ? str.lastIndexOf(match[match.length-1]) : -1;
-}
-
-const updateTrainingSetInStoreage = (word: Word) => {
-    chrome.storage.sync.get({
-            trainingSet: []
-        },
-        (data)=> {
-            data.trainingSet.push(word);
-            chrome.storage.sync.set({trainingSet:data.trainingSet});
-        }
-    );
 }
 
 
@@ -53,7 +43,7 @@ const requestTranslation = (word: string, sentence: string, boundingRect: DOMRec
     chrome.runtime.sendMessage({word: word}, (response) => {
         const translations = response?.translations.map((translation: any) => translation.text).join(", ");
 
-        updateTrainingSetInStoreage({
+        updateTrainingSetInStorage({
             occurance: window.location.href,
             sentence,
             sentenceTranslation: "",

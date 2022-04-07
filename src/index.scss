@@ -1,3 +1,5 @@
+@use 'theme';
+
 @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Raleway&display=swap');
 
 html {
@@ -6,8 +8,10 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Raleway', sans-serif;
-  background: darksalmon;
+  font-family: theme.$fontFamily;
+  background: theme.$colorSecondary;
+  color: theme.$colorSecondaryText;
+  line-height: 1;
 }
 
 * {

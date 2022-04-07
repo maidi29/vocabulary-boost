@@ -1,20 +1,19 @@
+@use '../../theme';
+
 .card {
   height: 14rem;
   width: 50vw;
   margin: auto;
   position: relative;
-  font-family: 'Indie Flower', cursive;
+  font-family: theme.$fontFamilyHand;
+  letter-spacing: 1px;
   font-size: 2rem;
   perspective: 50vw;
+  color: #333;
+  font-weight: bold;
   @media screen and (max-width: 1047px) {
     perspective: 100vw;
   }
-
-  /*&:hover {
-    .flip.content {
-      transform: rotateY( 0deg ) ;
-    }
-  }*/
 
   .content {
     position: absolute;

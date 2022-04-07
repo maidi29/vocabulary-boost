@@ -1,0 +1,13 @@
+@use '../../theme';
+
+.button {
+  background: theme.$colorPrimary;
+  border: 0;
+  cursor: pointer;
+  padding: 1rem;
+  color: theme.$colorPrimaryText;
+  font-size: 1rem;
+  &:hover {
+    background: lighten(theme.$colorPrimary, 20);
+  }
+}
