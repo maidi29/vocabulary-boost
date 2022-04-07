@@ -4,9 +4,12 @@
   background: theme.$colorPrimary;
   border: 0;
   cursor: pointer;
-  padding: 1rem;
+  padding: 1.5rem 2rem;
   color: theme.$colorPrimaryText;
-  font-size: 1rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  line-height: 1;
   &:hover {
     background: lighten(theme.$colorPrimary, 20);
   }

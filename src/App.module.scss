@@ -79,6 +79,10 @@
       font-size: 1.5rem;
       background: transparent;
       font-weight: bold;
+      &::placeholder {
+        color: #333;
+        opacity: 0.5;
+      }
     }
     .button {
       position: absolute;

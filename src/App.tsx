@@ -96,7 +96,7 @@ export const AppContainer = () => {
             setState(input.trim().toLowerCase() === word.translation.toLowerCase() ? PractiseStates.CORRECT : PractiseStates.WRONG);
         }}>
             <input className={styles.input} placeholder="Translation🖊️" value={input} onInput={e => setInput((e.target as HTMLInputElement).value)}/>
-            <Button className={styles.button} type="submit">{'>'}</Button>
+            <Button className={styles.button} type="submit">➡</Button>
         </form>;
 
     const renderCard = () => {
