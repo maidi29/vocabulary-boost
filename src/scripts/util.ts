@@ -1,11 +1,16 @@
 import {Word} from "../PractiseContext";
 
+export const requestTranslation = (word: string, callback: (response: any)=>void) => {
+    chrome.runtime.sendMessage({word: word}, callback)
+}
+
 export const addToStorage = (items: { [key: string]: any }) => {
     chrome.storage.sync.set(items);
 }
 
 export const getFromStorage = (name: string | string[] | { [key: string]: any }, callback: (items: { [key: string]: any }) => void): any => {
-    chrome.storage?.sync?.get([name], callback);
+    console.log(chrome.storage);
+    chrome.storage?.sync?.get(name, callback);
 }
 
 export const updateTrainingSetInStorage = (word: Word) => {
@@ -14,7 +19,8 @@ export const updateTrainingSetInStorage = (word: Word) => {
         },
         (data)=> {
             data.trainingSet.push(word);
-            addToStorage({trainingSet:data.trainingSet});
+            addToStorage({trainingSet: data.trainingSet});
+            console.log(data.trainingSet);
         }
     );
 }

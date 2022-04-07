@@ -14,13 +14,14 @@ import {
 
 export const AppContainer = () => {
     const { state, setState, word, setWord } = useContext(PractiseContext);
-    const [ trainingSet, setTrainingSet ] = useState([
+    const [ trainingSet, setTrainingSet ] = useState(
+        [
         {
             sentence: "A mouse is in the house.",
             sentenceTranslation: "Im Haus ist eine Maus.",
             translation: "Maus",
             word: "Mouse",
-            occurance: "https://skjdfnskjdfn"
+            occurance: "https://skjdfnskjdfijreiurjtieurjtierjeore.sldkfeporkeporn"
         },{
             sentence: "A dog is in the house.",
             sentenceTranslation: "Im Haus ist ein Hund.",
@@ -28,20 +29,25 @@ export const AppContainer = () => {
             word: "Dog",
             occurance: "https://skjdfnskjdfn"
         }
-    ]);
+    ]
+    );
     const [ index, setIndex ] = useState(0);
     const [ counter, setCounter ] = useState(0);
     const [input, setInput] = useState('');
     const [flipped, setFlipped] = useState(false);
 
-    getFromStorage('trainingSet',(result) => {
-        setTrainingSet(result.trainingSet);
-        setWord(result.trainingSet[index]);
-        console.log(result);
-    });
-    getFromStorage('counter',(result) => {
-        setCounter(result.counter);
-    });
+    useEffect(()=>{
+        getFromStorage(['trainingSet'],(result) => {
+            console.log(result);
+            setTrainingSet(result.trainingSet);
+            setWord(result.trainingSet[index]);
+        });
+        getFromStorage(['counter'],(result) => {
+            setCounter(result.counter);
+        });
+    },[])
+
+
     setWord(trainingSet[index]);
 
     const updateLearnedWords = () => {
@@ -127,15 +133,15 @@ export const AppContainer = () => {
           <div className={styles.cardContainer}>
                 <IndexCard flipped={flipped}>
                     <IndexCardSide variant={Variants.FRONT}>
-                        <div>{word.word}</div>
-                        <div className={styles.text}>{word.sentence}</div>
-                        <div className={styles.reference}>Learned at <a href={word.occurance}>{word.occurance}</a></div>
+                        <div>{word?.word}</div>
+                        <div className={styles.text}>{word?.sentence}</div>
+                        <div className={styles.reference}>Learned at <a href={word?.occurance}>{word?.occurance.substring(0,50)}{word?.occurance.length > 51 && '...'}</a></div>
                         {state !== PractiseStates.INITIAL && <button className={styles.flipButton} onClick={()=>setFlipped(!flipped)} title="Flip">↩</button>}
                     </IndexCardSide>
                     <IndexCardSide variant={Variants.BACK}>
-                        <div className={classnames(state === PractiseStates.WRONG && styles.wrong, state === PractiseStates.CORRECT && styles.correct)}>{word.translation}</div>
-                        <div className={styles.text}>{word.sentenceTranslation}</div>
-                        <div className={styles.reference}>Learned at <a href={word.occurance}>{word.occurance}</a></div>
+                        <div className={classnames(state === PractiseStates.WRONG && styles.wrong, state === PractiseStates.CORRECT && styles.correct)}>{word?.translation}</div>
+                        <div className={styles.text}>{word?.sentenceTranslation}</div>
+                        <div className={styles.reference}>Learned at <a href={word?.occurance}>{word?.occurance}</a></div>
                         <button className={styles.flipButton} onClick={()=>setFlipped(!flipped) } title="Flip">↩</button>
                     </IndexCardSide>
                 </IndexCard>

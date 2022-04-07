@@ -1,5 +1,4 @@
-import {Word} from "../PractiseContext";
-import {addToStorage, getFromStorage, updateTrainingSetInStorage} from "./util";
+import {requestTranslation, updateTrainingSetInStorage} from "./util";
 
 const sentenceCloser = new RegExp('[!?.]')
 
@@ -32,29 +31,17 @@ document.addEventListener('dblclick', ()=> {
 
 
         if (word && word.length < 50 && boundingRect) {
-            requestTranslation(word, sentence, boundingRect);
+            requestTranslation(word, (response) => {
+                const translations = response?.translations.map((translation: any) => translation.text).join(", ");
+                showTooltip(translations, boundingRect, translations, sentence, word);
+            });
         } else {
             console.log('Error with selection');
         }
     }
 );
 
-const requestTranslation = (word: string, sentence: string, boundingRect: DOMRect) => {
-    chrome.runtime.sendMessage({word: word}, (response) => {
-        const translations = response?.translations.map((translation: any) => translation.text).join(", ");
-
-        updateTrainingSetInStorage({
-            occurance: window.location.href,
-            sentence,
-            sentenceTranslation: "",
-            translation: translations,
-            word
-        })
-        showTooltip(translations, boundingRect);
-    })
-}
-
-const showTooltip = (message: string, boundingRect: DOMRect) => {
+const showTooltip = (message: string, boundingRect: DOMRect, translations: string, sentence: string, word: string) => {
     const id = 'vocabulary-boost-overlay';
     document.getElementById(id)?.remove();
 
@@ -70,9 +57,21 @@ const showTooltip = (message: string, boundingRect: DOMRect) => {
         font-size: 1rem;
         z-index: 1000;
         color: #333;`)
-    tooltip.innerHTML = `<div>${message}</div>`;
-
+    tooltip.innerHTML = `<div>${message}
+        <button id="add-vocabulary-boost">+</button>
+</div>`;
     document.body.appendChild(tooltip);
+    document.getElementById("add-vocabulary-boost")?.addEventListener("click", function(){
+        requestTranslation(sentence, (response)=> {
+            updateTrainingSetInStorage({
+                occurance: window.location.href,
+                sentence,
+                sentenceTranslation: response?.translations[0].text || "",
+                translation: translations,
+                word
+            })
+        })
+    });
 }
 
 export {};
