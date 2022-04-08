@@ -1,6 +1,7 @@
 import {requestTranslation, updateTrainingSetInStorage} from "./util";
 
-const sentenceCloser = new RegExp('[!?.]')
+const sentenceCloser = new RegExp('[!?.]');
+let ctrlKeyPressed = false;
 
 const firstIndex = (str: string, regex: RegExp): number => {
     const match = str.match(regex);
@@ -13,36 +14,49 @@ const lastIndex = (str: string, regex: RegExp): number => {
 }
 
 
+document.addEventListener('keydown', (e) => {
+    ctrlKeyPressed = e.ctrlKey
+})
+document.addEventListener('keyup', (e) => {
+    ctrlKeyPressed = !e.ctrlKey
+})
+
+
 document.addEventListener('dblclick', ()=> {
-        const selection = window.getSelection();
-        const word = selection?.toString().split(' ')[0];
-        const range = selection?.getRangeAt(0);
-        const boundingRect = range?.getBoundingClientRect();
+        if (ctrlKeyPressed) {
+            const selection = window.getSelection();
+            const word = selection?.toString().split(' ')[0]
+                .replace(new RegExp(/[.,;?!()]/g), '');
+            const range = selection?.getRangeAt(0);
+            const boundingRect = range?.getBoundingClientRect();
 
-        const startContainer = range?.startContainer as Text;
+            const startContainer = range?.startContainer as Text;
 
-        const textBefore = startContainer.wholeText.substring(0, range?.startOffset);
-        const sentenceBefore = textBefore.substring(lastIndex(textBefore, sentenceCloser)+1).trim();
+            const textBefore = startContainer?.wholeText?.substring(0, range?.startOffset);
+            const sentenceBefore = textBefore?.substring(lastIndex(textBefore, sentenceCloser) + 1).trim();
 
-        const textAfter = startContainer.wholeText.substring(range?.endOffset || 0);
-        const firstSentenceCloser = firstIndex(textAfter, sentenceCloser);
-        const sentenceAfter = textAfter.substring(0, firstSentenceCloser !== -1 ? firstSentenceCloser+1 : undefined).trim();
-        const sentence = [sentenceBefore, word, sentenceAfter].join(' ');
+            const textAfter = startContainer?.wholeText?.substring(range?.endOffset || 0);
+            const firstSentenceCloser = firstIndex(textAfter, sentenceCloser);
+            const sentenceAfter = textAfter?.substring(0, firstSentenceCloser !== -1 ? firstSentenceCloser + 1 : undefined).trim();
+            const sentence = [sentenceBefore, word, sentenceAfter].join(' ');
 
 
-        if (word && word.length < 50 && boundingRect) {
-            requestTranslation(word, (response) => {
-                const translations = response?.translations.map((translation: any) => translation.text).join(", ");
-                showTooltip(translations, boundingRect, translations, sentence, word);
-            });
-        } else {
-            console.log('Error with selection');
+            if (word && word.length < 50 && boundingRect) {
+                requestTranslation(word, (response) => {
+                    const translation = response?.translations[0].text;
+                    showTooltip(boundingRect, translation, sentence, word);
+                });
+            } else {
+                console.log('Error with selection');
+            }
         }
     }
 );
 
-const showTooltip = (message: string, boundingRect: DOMRect, translations: string, sentence: string, word: string) => {
+const showTooltip = (boundingRect: DOMRect, translation: string, sentence: string, word: string) => {
     const id = 'vocabulary-boost-overlay';
+    const closeId = 'vocabulary-boost-close';
+    const addId = 'vocabulary-boost-add';
     document.getElementById(id)?.remove();
 
     const tooltip = document.createElement('div');
@@ -53,24 +67,47 @@ const showTooltip = (message: string, boundingRect: DOMRect, translations: strin
         left: ${boundingRect.left}px; 
         background: white; 
         transform: translate(0, -100%); 
-        padding: 1rem;
-        font-size: 1rem;
+        padding: 12px;
         z-index: 1000;
-        color: #333;`)
-    tooltip.innerHTML = `<div>${message}
-        <button id="add-vocabulary-boost">+</button>
-</div>`;
+        box-shadow: 2px 2px 5px -1px #333;
+        color: #333;
+        font-size: 16px;
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        max-width: 100%;`
+    )
+    tooltip.innerHTML = `
+        <button id="${closeId}" title="close" style="
+            align-self: flex-end;
+            border: none;
+            font-size: 10px;
+            cursor: pointer;
+            background: none;
+        ">❌</button>
+        <div>${translation}</div>
+        <button id="${addId}" title="add" style="
+            background: #7981A4;
+            color: white;
+            padding: 7px 15px;
+            border: none;
+        ">Add to training set</button>`;
     document.body.appendChild(tooltip);
-    document.getElementById("add-vocabulary-boost")?.addEventListener("click", function(){
+    document.getElementById(addId)?.addEventListener("click", function(){
+        document.getElementById(id)?.remove();
         requestTranslation(sentence, (response)=> {
             updateTrainingSetInStorage({
                 occurance: window.location.href,
                 sentence,
                 sentenceTranslation: response?.translations[0].text || "",
-                translation: translations,
+                translation,
                 word
             })
-        })
+        });
+    });
+    document.getElementById(closeId)?.addEventListener("click", function(){
+        document.getElementById(id)?.remove();
     });
 }
 

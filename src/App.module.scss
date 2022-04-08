@@ -7,6 +7,26 @@
   align-items: center;
   gap: 2rem;
   padding: 1rem;
+
+  .buttonContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    .removeButton {
+      background: none;
+      border: 1px solid theme.$colorSecondaryText;
+      color: theme.$colorSecondaryText;
+      padding: 0 0.5rem;
+      font-size: 1.5rem;
+      height: fit-content;
+      cursor: pointer;
+      &:hover {
+        background: lighten(theme.$colorSecondary, 10);
+      }
+    }
+  }
+
   .cardContainer{
     display:flex;
     flex-wrap: wrap;
