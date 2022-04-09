@@ -1,5 +1,7 @@
-import {Word} from "../PractiseContext";
+import {Word} from "../context/PractiseContext";
 
+
+/***storage****/
 export const requestTranslation = (word: string, callback: (response: any)=>void) => {
     chrome.runtime?.sendMessage({word: word}, callback)
 }
@@ -31,37 +33,37 @@ export const updateTrainingSetInStorage = (word: Word) => {
         (data)=> {
             data.trainingSet.push(word);
             addToStorage({trainingSet: data.trainingSet});
-            console.log(data.trainingSet);
         }
     );
 }
 
-export const updateArchiveInStorage = (word: Word) => {
+export const updateArchiveInStorage = (word: Word, callback: ()=>void) => {
     getFromStorage({
             archive: []
         },
         (data)=> {
             data.archive.push(word);
             addToStorage({archive:data.archive});
+            callback();
         }
     );
 }
 
-//Todo: wait for removal and update trainingset after
-export const removeFromTrainingSet = (word: Word) => {
-    getFromStorage({
-            trainingSet: []
-        },
-        (data)=> {
-            const index = data.trainingSet.findIndex((w: Word)=> word.word === w.word && word.sentence === word.sentence);
-            console.log(index);
-            console.log(data.trainingSet);
-            if (index > -1) {
-                data.trainingSet.splice(index, 1);
+export const removeFromTrainingSet = (word: Word): Promise<void> => {
+    return new Promise((resolve) => {
+        getFromStorage({
+                trainingSet: []
+            },
+            (data) => {
+                const index = data.trainingSet.findIndex((w: Word) => word.word === w.word && word.sentence === word.sentence);
+                if (index > -1) {
+                    data.trainingSet.splice(index, 1);
+                }
+                addToStorage({trainingSet: data.trainingSet});
+                resolve();
             }
-            addToStorage({trainingSet:data.trainingSet});
-        }
-    );
+        );
+    });
 }
 
 export const updateLearnedWordsInStorage = (increaseNumber: number) => {
@@ -72,5 +74,13 @@ export const updateLearnedWordsInStorage = (increaseNumber: number) => {
             data.learnedWords += increaseNumber;
             addToStorage({learnedWords:data.learnedWords});
         }
+    );
+}
+
+
+/***other utils***/
+export const getFlagEmoji = (countryCode: string): string => {
+    return countryCode?.toUpperCase()?.replace(/./g, char =>
+        String.fromCodePoint(127397 + char.charCodeAt(0))
     );
 }

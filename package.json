@@ -13,6 +13,7 @@
     "buffer": "^6.0.3",
     "classnames": "^2.3.1",
     "npm-run-all": "^4.1.5",
+    "npm-watch": "^0.11.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-html-parser": "^2.0.2",
@@ -25,13 +26,19 @@
     "web-vitals": "^2.1.4",
     "webpack-cli": "^4.9.2"
   },
+  "watch": {
+    "build": {
+        "patterns": ["src"],
+        "extensions": "ts,tsx,scss"
+      }
+  },
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prebuild": "rimraf build",
     "build": "npm-run-all build:*",
-    "watch": "npm-run-all build:* -- -watch",
+    "watch": "npm-watch",
     "build:app": "set \"INLINE_RUNTIME_CHUNK=false\"  && react-scripts build",
     "build:bg": "set \"NODE_ENV=production\" && set \"BABEL_ENV=production\" && webpack --config webpack.config.js"
   },

@@ -1,4 +1,5 @@
-import {requestTranslation, updateTrainingSetInStorage} from "./util";
+import {requestTranslation, updateTrainingSetInStorage, waitForStorage} from "./util";
+import {Languages} from "../model/Languages";
 
 const sentenceCloser = new RegExp('[!?.]');
 let ctrlKeyPressed = false;
@@ -13,12 +14,15 @@ const lastIndex = (str: string, regex: RegExp): number => {
     return match ? str.lastIndexOf(match[match.length-1]) : -1;
 }
 
-
 document.addEventListener('keydown', (e) => {
-    ctrlKeyPressed = e.ctrlKey
+    if (e.ctrlKey) {
+        ctrlKeyPressed = true;
+    }
 })
 document.addEventListener('keyup', (e) => {
-    ctrlKeyPressed = !e.ctrlKey
+    if (e.ctrlKey) {
+        ctrlKeyPressed = false;
+    }
 })
 
 
@@ -43,7 +47,6 @@ document.addEventListener('dblclick', ()=> {
 
             if (word && word.length < 50 && boundingRect) {
                 requestTranslation(word, (response) => {
-                    console.log(response);
                     const translation = response?.translations[0].text;
                     showTooltip(boundingRect, translation, sentence, word);
                 });
@@ -93,17 +96,20 @@ const showTooltip = (boundingRect: DOMRect, translation: string, sentence: strin
             color: white;
             padding: 7px 15px;
             border: none;
+            cursor: pointer;
         ">Add to training set</button>`;
     document.body.appendChild(tooltip);
-    document.getElementById(addId)?.addEventListener("click", function(){
+    document.getElementById(addId)?.addEventListener("click", async function () {
         document.getElementById(id)?.remove();
-        requestTranslation(sentence, (response)=> {
+        const lang = await waitForStorage('language') as Languages || Languages.DE;
+        requestTranslation(sentence, (response) => {
             updateTrainingSetInStorage({
                 occurance: window.location.href,
                 sentence,
                 sentenceTranslation: response?.translations[0].text || "",
                 translation,
-                word
+                word,
+                language: lang
             })
         });
     });

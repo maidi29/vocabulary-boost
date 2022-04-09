@@ -3,50 +3,35 @@ import React, {useContext, useEffect, useState} from 'react';
 import styles from './App.module.scss';
 import {IndexCard} from "./components/IndexCard/IndexCard";
 import {IndexCardSide, Variants} from "./components/IndexCard/IndexCardSide/IndexCardSide";
-import {PractiseContext, PractiseStates, withPractiseContext} from "./PractiseContext";
+import {PractiseContext, PractiseStates, withPractiseContext} from "./context/PractiseContext";
 import {Button} from "./components/Button/Button";
 import {
-    addToStorage,
+    addToStorage, getFlagEmoji,
     getFromStorage,
     removeFromTrainingSet,
     updateArchiveInStorage,
     updateLearnedWordsInStorage
 } from "./scripts/util";
+import {languages} from "./constants/languages";
+import {Languages} from "./model/Languages";
 
 /*Todo:
-- Nutzer im options tab Sprache einstellen lassen
+- wörter aus dem Archiv löschen
+- Nutzer initial sprache einstellen lassen
 - Zeichenanzahl beschränken
-- Wörter die der Nutzer richtig übersetzen kann im Archiv abspeichern, die anderen bleiben im Trainingsset
 - immer anzeigen wie viele Wörter schon gelernt wurden
-- Wörter aus dem Trainingset in zufälliger Reihenfolge anzeigen
 - Anzeigen wie viele Wörter im Trainingset sind.
-- Möglichkeit zum Lernen aus dem Archiv geben
 - Template für Overlay?
  */
 
-
 export const AppContainer = () => {
     const { state, setState, word, setWord } = useContext(PractiseContext);
-    const [ trainingSet, setTrainingSet ] = useState(
-        [
-        {
-            sentence: "A mouse is in the house.",
-            sentenceTranslation: "Im Haus ist eine Maus.",
-            translation: "Maus",
-            word: "Mouse",
-            occurance: "https://skjdfnskjdfijreiurjtieurjtierjeore.sldkfeporkeporn"
-        },{
-            sentence: "A dog is in the house.",
-            sentenceTranslation: "Im Haus ist ein Hund.",
-            translation: "Hund",
-            word: "Dog",
-            occurance: "https://skjdfnskjdfn"
-        }
-    ]
-    );
+    const [ trainingSet, setTrainingSet ] = useState([]);
     const [ index, setIndex ] = useState(0);
     const [ counter, setCounter ] = useState(0);
-    const [ language, setLanguage ] = useState(0);
+    const [ language, setLanguage ] = useState<string>();
+    const [ archive, setArchive ] = useState([]);
+    const [ isArchive, setIsArchive ] = useState(false);
     const [input, setInput] = useState('');
     const [flipped, setFlipped] = useState(false);
 
@@ -70,8 +55,8 @@ export const AppContainer = () => {
             setCounter(result.counter);
         });
         updateLanguage();
+        updateArchive();
     },[])
-
 
     setWord(trainingSet[index]);
 
@@ -80,25 +65,39 @@ export const AppContainer = () => {
         updateLearnedWordsInStorage(1);
     }
 
-    const switchToNextWord = () => {
+    const switchToNextWord = async () => {
+        if(!isArchive) {
+            await updateTrainingSet();
+        }
         if (trainingSet.length > 0) {
             const newIndex = getRandomWithOneExclusion(trainingSet.length, index);
-            console.log(newIndex);
             setIndex(newIndex);
             setInput('');
             setState(PractiseStates.INITIAL);
+        } else {
+            alert("last word");
         }
     }
 
-    const updateTrainingSet = () => {
-        getFromStorage(['trainingSet'],(result) => {
-            setTrainingSet(result.trainingSet);
-        });
+    const updateTrainingSet = async (): Promise<void> => {
+        return new Promise((resolve)=>{
+            getFromStorage(['trainingSet'],(result) => {
+                setTrainingSet(result.trainingSet);
+                console.log('resolve');
+                resolve();
+            });
+        })
     };
 
     const updateLanguage = () => {
         getFromStorage(['language'],(result) => {
             setLanguage(result.language);
+        });
+    };
+
+    const updateArchive = () => {
+        getFromStorage(['archive'],(result) => {
+            setArchive(result.archive);
         });
     };
 
@@ -109,13 +108,12 @@ export const AppContainer = () => {
     }, [index]);
 
     useEffect(() => {
-            setFlipped(state !== PractiseStates.INITIAL);
-            if(state === PractiseStates.CORRECT) {
-                updateLearnedWords();
-                updateArchiveInStorage(word);
-                removeFromTrainingSet(word);
-                updateTrainingSet();
-            }
+        setFlipped(state !== PractiseStates.INITIAL);
+        if (state === PractiseStates.CORRECT) {
+            updateLearnedWords();
+            updateArchiveInStorage(word, updateArchive);
+            removeFromTrainingSet(word);
+        }
     }, [state]);
 
     const renderInput = () =>
@@ -148,24 +146,36 @@ export const AppContainer = () => {
         }
     }
 
+    useEffect(() => {
+        setTrainingSet(isArchive ? archive: trainingSet);
+        switchToNextWord();
+    }, [isArchive]);
+
   return (
       <div className={styles.appContainer}>
-          {language &&
+          { archive.length > 0 &&
+              <Button onClick={()=>setIsArchive(!isArchive)}>
+                  {isArchive ? 'Leave archive' : 'Practice archive'}
+              </Button>
+          }
+          { language &&
               <>
               <h1>Practise the words you learned while browsing</h1>
               <h2>Total number of learned words: {counter}</h2>
               Language: {language}
-              { trainingSet.length > 0 ?
+              { trainingSet.length > 0 && word ?
                   <>
                       <div className={styles.cardContainer}>
                           <IndexCard flipped={flipped}>
                               <IndexCardSide variant={Variants.FRONT}>
+                                  <div>{getFlagEmoji('en')}</div>
                                   <div>{word?.word}</div>
                                   <div className={styles.text}>{word?.sentence}</div>
                                   <div className={styles.reference}>Learned at <a href={word?.occurance}>{word?.occurance.substring(0,50)}{word?.occurance.length > 51 && '...'}</a></div>
                                   {state !== PractiseStates.INITIAL && <button className={styles.flipButton} onClick={()=>setFlipped(!flipped)} title="Flip">↩</button>}
                               </IndexCardSide>
                               <IndexCardSide variant={Variants.BACK}>
+                                  <div>{word && getFlagEmoji(word.language)}</div>
                                   <div className={classnames(state === PractiseStates.WRONG && styles.wrong, state === PractiseStates.CORRECT && styles.correct)}>{word?.translation}</div>
                                   <div className={styles.text}>{word?.sentenceTranslation}</div>
                                   <div className={styles.reference}>Learned at <a href={word?.occurance}>{word?.occurance}</a></div>
@@ -180,8 +190,10 @@ export const AppContainer = () => {
                       </div>
                       <div className={styles.buttonContainer}>
                           <button className={styles.removeButton} onClick={()=>{
-                              removeFromTrainingSet(word);
-                              updateTrainingSet();
+                              (async () => {
+                                  await removeFromTrainingSet(word);
+                                  await updateTrainingSet();
+                              })();
                           }} title="Remove word">🗑</button>
                           <Button onClick={switchToNextWord}>Next word</Button>
                       </div>
@@ -212,17 +224,10 @@ export const AppContainer = () => {
                           addToStorage({language: e.target.value});
                           updateLanguage();
                       }}>
-                      <option value="de">Deutsch</option>
-                      <option value="es">Español</option>
-                      <option value="ja">日本語</option>
-                      <option value="fr">Français</option>
-                      <option value="it">Italiano</option>
-                      <option value="nl">Nederlands</option>
-                      <option value="pl">Polski</option>
-                      <option value="pt-BR">Português (Brasil)</option>
-                      <option value="pt-PT">Português</option>
-                      <option value="ru">Русский</option>
-                      <option value="zh">简体中文</option>
+                          {languages.map((lang) => (
+                                  <option value={lang.code}>{getFlagEmoji(lang.code)}{lang.name}</option>
+                              )
+                          )}
                   </select>
               </div>
       </div>
