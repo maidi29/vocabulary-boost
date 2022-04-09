@@ -43,6 +43,7 @@ document.addEventListener('dblclick', ()=> {
 
             if (word && word.length < 50 && boundingRect) {
                 requestTranslation(word, (response) => {
+                    console.log(response);
                     const translation = response?.translations[0].text;
                     showTooltip(boundingRect, translation, sentence, word);
                 });

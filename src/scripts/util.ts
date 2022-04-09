@@ -1,17 +1,28 @@
 import {Word} from "../PractiseContext";
 
 export const requestTranslation = (word: string, callback: (response: any)=>void) => {
-    chrome.runtime.sendMessage({word: word}, callback)
+    chrome.runtime?.sendMessage({word: word}, callback)
 }
 
 export const addToStorage = (items: { [key: string]: any }) => {
-    chrome.storage.sync.set(items);
+    chrome.storage?.sync?.set(items);
 }
 
 export const getFromStorage = (name: string | string[] | { [key: string]: any }, callback: (items: { [key: string]: any }) => void): any => {
-    console.log(chrome.storage);
     chrome.storage?.sync?.get(name, callback);
 }
+
+export const waitForStorage = async (key: string): Promise<string | Record<string, any>> => {
+    return new Promise((resolve, reject) => {
+        getFromStorage([key], function (result) {
+            if (result[key] === undefined) {
+                reject();
+            } else {
+                resolve(result[key]);
+            }
+        });
+    });
+};
 
 export const updateTrainingSetInStorage = (word: Word) => {
     getFromStorage({
