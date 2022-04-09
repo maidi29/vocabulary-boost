@@ -47,12 +47,18 @@ export const updateArchiveInStorage = (word: Word) => {
     );
 }
 
+//Todo: wait for removal and update trainingset after
 export const removeFromTrainingSet = (word: Word) => {
     getFromStorage({
             trainingSet: []
         },
         (data)=> {
-            data.trainingSet.remove(word);
+            const index = data.trainingSet.findIndex((w: Word)=> word.word === w.word && word.sentence === word.sentence);
+            console.log(index);
+            console.log(data.trainingSet);
+            if (index > -1) {
+                data.trainingSet.splice(index, 1);
+            }
             addToStorage({trainingSet:data.trainingSet});
         }
     );

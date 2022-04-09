@@ -50,10 +50,19 @@ export const AppContainer = () => {
     const [input, setInput] = useState('');
     const [flipped, setFlipped] = useState(false);
 
+    const getRandomWithOneExclusion = (lengthOfArray: number,indexToExclude?: number) =>{
+        let rand = null;
+        while(rand === null || rand === indexToExclude){
+            rand = Math.round(Math.random() * (lengthOfArray - 1));
+        }
+        return rand;
+    }
+
     useEffect(()=>{
         getFromStorage(['trainingSet'],(result) => {
-            console.log(result);
-            setIndex(Math.floor(Math.random()*trainingSet.length))
+            const newIndex = getRandomWithOneExclusion(trainingSet.length);
+            console.log(newIndex);
+            setIndex(newIndex);
             setTrainingSet(result.trainingSet);
             setWord(result.trainingSet[index]);
         });
@@ -73,7 +82,8 @@ export const AppContainer = () => {
 
     const switchToNextWord = () => {
         if (trainingSet.length > 0) {
-            const newIndex = Math.floor(Math.random()*trainingSet.length);
+            const newIndex = getRandomWithOneExclusion(trainingSet.length, index);
+            console.log(newIndex);
             setIndex(newIndex);
             setInput('');
             setState(PractiseStates.INITIAL);
