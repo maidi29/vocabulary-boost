@@ -18,8 +18,8 @@ export interface Word {
 }
 
 export type PractiseContextType = {
-    word: Word,
-    setWord: (word: Word) => void,
+    word?: Word,
+    setWord: (word?: Word) => void,
     state: PractiseStates
     setState:(newState: PractiseStates) => void
 }
@@ -28,14 +28,7 @@ export const PractiseContext = createContext<PractiseContextType>(undefined!);
 
 
 export const PractiseContextProvider: FC = ({children}) => {
-    const [word, setWord] = useState({
-        word: '',
-        translation: '',
-        sentence: '',
-        sentenceTranslation: '',
-        occurance: '',
-        language: Languages.DE
-    });
+    const [word, setWord] = useState<Word>();
     const [state, setState] = useState(PractiseStates.INITIAL);
 
      useEffect(()=> {

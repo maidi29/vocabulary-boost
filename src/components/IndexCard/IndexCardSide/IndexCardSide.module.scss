@@ -1,14 +1,16 @@
 .content {
   position: absolute;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   backface-visibility: hidden;
-  padding: 1.5rem;
+  padding: 1.3rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   justify-content: center;
+  max-height: 17rem;
+  overflow: auto;
 }
 
 .back {

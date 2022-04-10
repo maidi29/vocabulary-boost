@@ -1,7 +1,7 @@
 @use '../../theme';
 
 .card {
-  height: 14rem;
+  height: 17rem;
   width: 50vw;
   margin: auto;
   position: relative;
@@ -11,6 +11,7 @@
   perspective: 50vw;
   color: #333;
   font-weight: bold;
+  max-width: 35rem;
   @media screen and (max-width: 1047px) {
     perspective: 100vw;
   }

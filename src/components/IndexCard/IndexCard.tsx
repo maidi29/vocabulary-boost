@@ -11,10 +11,6 @@ interface IndexCardProps {
 
 export const IndexCard = ({children, flipped = false}: IndexCardProps): JSX.Element => {
 
-    useEffect(() => {
-        console.log(flipped);
-    },[flipped])
-
     return (
         <div className={styles.card}>
             <div className={`${styles.content} ${flipped && styles.flip}`}>

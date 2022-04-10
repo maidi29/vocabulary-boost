@@ -17,6 +17,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-html-parser": "^2.0.2",
+    "react-modal": "^3.14.4",
     "react-scripts": "^5.0.0",
     "react-tooltip": "^4.2.21",
     "rimraf": "^3.0.2",
@@ -28,9 +29,11 @@
   },
   "watch": {
     "build": {
-        "patterns": ["src"],
-        "extensions": "ts,tsx,scss"
-      }
+      "patterns": [
+        "src"
+      ],
+      "extensions": "ts,tsx,scss"
+    }
   },
   "scripts": {
     "start": "react-scripts start",
@@ -66,6 +69,7 @@
   },
   "devDependencies": {
     "@types/react-html-parser": "^2.0.2",
+    "@types/react-modal": "^3.13.1",
     "@types/three": "^0.137.0"
   }
 }

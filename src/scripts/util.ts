@@ -66,6 +66,23 @@ export const removeFromTrainingSet = (word: Word): Promise<void> => {
     });
 }
 
+export const removeFromArchive = (word: Word): Promise<void> => {
+    return new Promise((resolve) => {
+        getFromStorage({
+                archive: []
+            },
+            (data) => {
+                const index = data.archive.findIndex((w: Word) => word.word === w.word && word.sentence === word.sentence);
+                if (index > -1) {
+                    data.archive.splice(index, 1);
+                }
+                addToStorage({archive: data.archive});
+                resolve();
+            }
+        );
+    });
+}
+
 export const updateLearnedWordsInStorage = (increaseNumber: number) => {
     getFromStorage({
             learnedWords: 0
@@ -80,7 +97,18 @@ export const updateLearnedWordsInStorage = (increaseNumber: number) => {
 
 /***other utils***/
 export const getFlagEmoji = (countryCode: string): string => {
+    if(countryCode && countryCode.includes('-')) {
+       countryCode = countryCode.split('-')[1];
+    }
     return countryCode?.toUpperCase()?.replace(/./g, char =>
         String.fromCodePoint(127397 + char.charCodeAt(0))
     );
+}
+
+export const getRandomWithOneExclusion = (lengthOfArray: number,indexToExclude?: number) =>{
+    let rand = null;
+    while(rand === null || rand === indexToExclude){
+        rand = Math.round(Math.random() * (lengthOfArray - 1));
+    }
+    return rand;
 }

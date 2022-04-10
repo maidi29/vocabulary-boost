@@ -10,12 +10,13 @@ export enum Variants {
 export interface IndexCardSideProps {
     children: ReactNode,
     variant: Variants,
+    className?: string
 }
 
-export const IndexCardSide = ({children, variant}: IndexCardSideProps): JSX.Element => {
+export const IndexCardSide = ({children, variant, className}: IndexCardSideProps): JSX.Element => {
 
     return (
-        <div className={classnames(styles.content, styles[variant])}>
+        <div className={classnames(styles.content, styles[variant], className)}>
                 {children}
         </div>
     );

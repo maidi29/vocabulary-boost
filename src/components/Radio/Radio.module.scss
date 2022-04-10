@@ -1,0 +1,43 @@
+@use '../../theme';
+
+.radio {
+  display: flex;
+  gap: 0.5em;
+  cursor: pointer;
+
+  &:focus-within {
+    color: theme.$colorPrimary;
+  }
+
+  input[type="radio"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    margin: 0;
+    color: theme.$colorPrimary;
+    width: 1.15rem;
+    height: 1.15rem;
+    border: 0.15rem solid theme.$colorPrimary;
+    border-radius: 50%;
+    transform: translateY(-0.075rem);
+    display: grid;
+    place-content: center;
+    &::before {
+      content: "";
+      width: 0.65rem;
+      height: 0.65rem;
+      border-radius: 50%;
+      transform: scale(0);
+      transition: 120ms transform ease-in-out;
+      box-shadow: inset 1rem 1rem theme.$colorPrimary;
+    }
+    &:checked::before {
+      transform: scale(1);
+    }
+    &:focus {
+      outline: max(2px, 0.15rem) solid theme.$colorPrimary;
+      outline-offset: max(2px, 0.15rem);
+    }
+  }
+}
+
