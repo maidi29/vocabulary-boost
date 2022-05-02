@@ -85,6 +85,22 @@
 
   .text {
     font-size: 1.5rem;
+    b {
+      display: inline-block;
+      position: relative;
+      &::before {
+        background-color: theme.$colorPrimary;
+        opacity: 0.5;
+        content: "";
+        position: absolute;
+        width: calc(100% + 4px);
+        height: 80%;
+        left: -2px;
+        bottom: 0;
+        z-index: -1;
+        transform: rotate(-2deg);
+      }
+    }
   }
 
   .comment, .reference {
@@ -101,7 +117,8 @@
 
   .emoji {
     text-align: center;
-    font-size: 3rem;
+    font-size: 3.5rem;
+    margin-top: auto;
   }
 
   .correct {
@@ -195,6 +212,10 @@
   align-items: flex-start;
   width: 100%;
   gap: 1.5rem;
+}
+
+.donutLink {
+  text-decoration: none;
 }
 
 

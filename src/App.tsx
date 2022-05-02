@@ -18,12 +18,6 @@ import Modal from "react-modal";
 import {Radio} from "./components/Radio/Radio";
 
 /*Todo:
-- style emoji in index card
-- mehrere Übersetzungen?
-- wort in beispielsatz markieren
-- wörter aus dem Archiv löschen
-- Nutzer initial sprache einstellen lassen
-- Zeichenanzahl beschränken
 - Template für Overlay?
 - code refactoren
 - Webstore sources
@@ -103,6 +97,20 @@ export const AppContainer = () => {
             setArchive(result.archive);
         });
     };
+
+    const formatSentence = (sentence: string, word: string): JSX.Element => {
+        const startIndexWord = sentence.toLowerCase().indexOf(word.toLowerCase());
+        const parts = sentence.split(new RegExp(word, 'i'));
+        const highlightedPart = sentence.substring(startIndexWord, startIndexWord + word.length);
+        return <>
+            {parts.map((part, index) =>
+            <>
+                {part}
+                { (index < parts.length-1 && highlightedPart !== '') && <b>{highlightedPart}</b> }
+            </>
+            )}
+        </>
+    }
 
     useEffect(() => {
         if (trainingSet && index) {
@@ -187,15 +195,15 @@ export const AppContainer = () => {
                               <IndexCardSide variant={Variants.FRONT} className={styles.wordCard}>
                                   <div className={styles.language}>{getFlagEmoji('en')}</div>
                                   <div>{word?.word}</div>
-                                  <div className={styles.text}>{word?.sentence}</div>
+                                  <div className={styles.text}>{formatSentence(word.sentence, word.word)}</div>
                                   <div className={styles.reference}>Learned at <a href={word?.occurance}>{word?.occurance.substring(0,50)}{word?.occurance.length > 51 && '...'}</a></div>
                                   {state !== PractiseStates.INITIAL && <button className={styles.flipButton} onClick={()=>setFlipped(!flipped)} title="Flip">↩</button>}
                               </IndexCardSide>
                               <IndexCardSide variant={Variants.BACK} className={styles.wordCard}>
                                   <div className={styles.language}>{word && getFlagEmoji(word.language)}</div>
                                   <div className={classnames(state === PractiseStates.WRONG && styles.wrong, state === PractiseStates.CORRECT && styles.correct)}>{word?.translation}</div>
-                                  <div className={styles.text}>{word?.sentenceTranslation}</div>
-                                  <div className={styles.reference}>Learned at <a href={word?.occurance}>{word?.occurance}</a></div>
+                                  <div className={styles.text}>{formatSentence(word.sentenceTranslation, word.translation)}</div>
+                                  <div className={styles.reference}>Learned at <a href={word?.occurance}>{word?.occurance.substring(0,50)}{word?.occurance.length > 51 && '...'}</a></div>
                                   <button className={styles.flipButton} onClick={()=>setFlipped(!flipped) } title="Flip">↩</button>
                               </IndexCardSide>
                           </IndexCard>
@@ -206,17 +214,12 @@ export const AppContainer = () => {
                           </IndexCard>
                       </div>
                       <div className={styles.buttonContainer}>
-                          <button className={styles.removeButton} onClick={()=>{
+                          { !isArchive && <button className={styles.removeButton} onClick={()=>{
                               (async () => {
-                                  if(isArchive) {
-                                      await removeFromArchive(word);
-                                      updateArchive();
-                                  } else {
                                       await removeFromTrainingSet(word);
                                       await updateTrainingSet();
-                                  }
                               })();
-                          }} title="Remove word">🗑</button>
+                          }} title="Remove word">🗑</button> }
                           <Button onClick={switchToNextWord}>Next word</Button>
                       </div>
                   </>
@@ -239,10 +242,12 @@ export const AppContainer = () => {
                       </div>
                   </div>
               }
-                  <div className={classnames(styles.row, styles.bottomRow)}>
-                      <span>Native Language: {getFlagEmoji(language)}</span>
-                      <Link onClick={()=>openModal()}>Change</Link>
+                  <div className={classnames(styles.column, styles.bottomRow)}>
+                      <div className={styles.row}><span>Native Language: {getFlagEmoji(language)}</span>
+                          <Link onClick={()=>openModal()}>Change</Link></div>
+                      <div><a href="https://www.buymeacoffee.com/maidi" className={styles.donutLink}>🍩 Buy me a donut</a></div>
                   </div>
+
               </>
             }
           <Modal

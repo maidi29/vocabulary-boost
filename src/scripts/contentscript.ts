@@ -25,7 +25,6 @@ document.addEventListener('keyup', (e) => {
     }
 })
 
-
 document.addEventListener('dblclick', ()=> {
         if (ctrlKeyPressed) {
             const selection = window.getSelection();
@@ -42,7 +41,7 @@ document.addEventListener('dblclick', ()=> {
             const textAfter = startContainer?.wholeText?.substring(range?.endOffset || 0);
             const firstSentenceCloser = firstIndex(textAfter, sentenceCloser);
             const sentenceAfter = textAfter?.substring(0, firstSentenceCloser !== -1 ? firstSentenceCloser + 1 : undefined).trim();
-            const sentence = [sentenceBefore, word, sentenceAfter].join(' ');
+            const sentence = [sentenceBefore, word, sentenceAfter].join(' ').substring(0, 150);
 
 
             if (word && word.length < 50 && boundingRect) {
@@ -90,7 +89,7 @@ const showTooltip = (boundingRect: DOMRect, translation: string, sentence: strin
             cursor: pointer;
             background: none;
         ">❌</button>
-        <div>${translation}</div>
+        <div style="font-weight: bold">${translation}</div>
         <button id="${addId}" title="add" style="
             background: #7981A4;
             color: white;
