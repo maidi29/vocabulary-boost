@@ -49,8 +49,6 @@ document.addEventListener('dblclick', ()=> {
                     const translation = response?.translations[0].text;
                     showTooltip(boundingRect, translation, sentence, word);
                 });
-            } else {
-                console.log('Error with selection');
             }
         }
     }

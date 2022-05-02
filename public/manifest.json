@@ -1,6 +1,6 @@
 {
   "name": "Vocabulary Boost",
-  "description": "Select unknown words in a foreign language that you're learning and get immediate translations and the option to add the word to your trainsing set. Later you can go through all your newly added words and train with them. This way you will increase your vocabulary base in a natural way.",
+  "description": "Get instant translations for unknown english words while surfing. Practice the words later and expand your vocabulary this way.",
   "version": "0.0.1",
   "manifest_version": 3,
   "icons": {
