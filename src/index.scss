@@ -34,3 +34,24 @@ a {
 h1, h2, h3, h4, h5 {
   margin: 0;
 }
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.no-gap {
+  gap: 0;
+}
+
+.start {
+  align-items: flex-start;
+}

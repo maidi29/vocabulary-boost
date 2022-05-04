@@ -1,0 +1,39 @@
+@use '../../theme';
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #00000099;
+}
+
+.modal {
+  position: absolute;
+  background-color: theme.$colorTertiary;
+  color: theme.$colorTertiaryText;
+  box-shadow: 0 3px 6px #00000066;
+  border: none;
+  border-radius: 0;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  height: min-content;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+}
+
+.languageForm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 1.5rem;
+}

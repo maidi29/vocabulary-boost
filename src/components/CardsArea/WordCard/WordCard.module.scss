@@ -1,0 +1,59 @@
+@use '../../../theme';
+
+.wordCard {
+  padding: 1.3rem 3.5rem 1.3rem 1.3rem !important;
+
+  .language {
+    position: absolute;
+    top: 1.3rem;
+    right: 1.3rem;
+  }
+
+  .text {
+    font-size: 1.5rem;
+    b {
+      display: inline-block;
+      position: relative;
+      &::before {
+        background-color: theme.$colorPrimary;
+        opacity: 0.5;
+        content: "";
+        position: absolute;
+        width: calc(100% + 4px);
+        height: 80%;
+        left: -2px;
+        bottom: 0;
+        z-index: -1;
+        transform: rotate(-2deg);
+      }
+    }
+  }
+
+  .flipButton {
+    position: absolute;
+    bottom:1rem;
+    right: 1rem;
+    width: min-content;
+    color: theme.$colorTertiary;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    font-size: 2rem;
+    cursor:pointer;
+    font-weight: bold;
+    font-family: theme.$fontFamily;
+    &:hover {
+      background: lighten(theme.$colorSecondary,10);
+    }
+  }
+
+  .reference {
+    margin-top: auto;
+    font-size: 1rem;
+    font-family: theme.$fontFamily;
+    font-weight: normal;
+    letter-spacing: normal;
+    word-break: break-word;
+  }
+}
+

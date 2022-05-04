@@ -49,7 +49,7 @@ export const updateArchiveInStorage = (word: Word, callback: ()=>void) => {
     );
 }
 
-export const removeFromTrainingSet = (word: Word): Promise<void> => {
+export const removeFromTrainingSetInStorage = (word: Word): Promise<void> => {
     return new Promise((resolve) => {
         getFromStorage({
                 trainingSet: []
@@ -64,34 +64,6 @@ export const removeFromTrainingSet = (word: Word): Promise<void> => {
             }
         );
     });
-}
-
-export const removeFromArchive = (word: Word): Promise<void> => {
-    return new Promise((resolve) => {
-        getFromStorage({
-                archive: []
-            },
-            (data) => {
-                const index = data.archive.findIndex((w: Word) => word.word === w.word && word.sentence === word.sentence);
-                if (index > -1) {
-                    data.archive.splice(index, 1);
-                }
-                addToStorage({archive: data.archive});
-                resolve();
-            }
-        );
-    });
-}
-
-export const updateLearnedWordsInStorage = (increaseNumber: number) => {
-    getFromStorage({
-            learnedWords: 0
-        },
-        (data)=> {
-            data.learnedWords += increaseNumber;
-            addToStorage({learnedWords:data.learnedWords});
-        }
-    );
 }
 
 

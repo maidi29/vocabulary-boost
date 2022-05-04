@@ -1,0 +1,50 @@
+@use '../../../theme';
+
+.inputContainer {
+  position: relative;
+  display: flex;
+  .input {
+    padding: 1.2rem;
+    border: 2px solid #ccc;
+    border-radius: 0;
+    width: 100%;
+    font-family: theme.$fontFamilyHand;
+    letter-spacing: 1px;
+    font-size: 1.5rem;
+    background: transparent;
+    font-weight: bold;
+    &::placeholder {
+      color: #333;
+      opacity: 0.5;
+    }
+  }
+  .button {
+    position: absolute;
+    right:0;
+    height: 100%;
+    padding: 0 1rem;
+    font-size: 2rem;
+  }
+}
+
+.emoji {
+  text-align: center;
+  font-size: 3.5rem;
+  margin-top: auto;
+}
+
+.correct {
+  color: theme.$colorCorrect;
+}
+
+.wrong {
+  color: theme.$colorIncorrect;
+}
+
+.comment {
+  margin-top: auto;
+  font-size: 1rem;
+  font-family: theme.$fontFamily;
+  font-weight: normal;
+  letter-spacing: normal;
+}

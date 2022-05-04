@@ -1,0 +1,12 @@
+
+.cardContainer{
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1rem;
+  > * {
+    max-width: 500px;
+    flex-grow: 1;
+  }
+}

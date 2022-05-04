@@ -1,0 +1,7 @@
+@use '../../theme';
+
+.infoBox {
+  background-color: theme.$colorTertiary;
+  color: theme.$colorTertiaryText;
+  padding: 2rem;
+}
