@@ -16,9 +16,6 @@ module.exports = {
     },
     resolve: {
         extensions: ['.ts', '.tsx'],
-        fallback: {
-            "buffer": require.resolve("buffer/")
-        }
     },
     module:{
         rules:[{

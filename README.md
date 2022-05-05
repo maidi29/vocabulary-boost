@@ -17,10 +17,10 @@ Use this Extension: [Link]
 
 Don't forget to add an API_KEY for deepl to your .env file.
 
-###`npm run watch`
+### `npm run watch`
 Rebuild the app on every change. Go to chrome://extensions/ and click "Load unpacked extension". Select the build folder that gets updated on every change. 
 
-###`npm run build`
+### `npm run build`
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
