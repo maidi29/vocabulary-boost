@@ -7,7 +7,7 @@ import {Button} from "../../Button/Button";
 import styles from './TranslationCard.module.scss';
 
 export const TranslationCard = (): JSX.Element => {
-    const { state, setState, word } = useContext(PractiseContext);
+    const { state, setState, word, isArchive } = useContext(PractiseContext);
     const [ input, setInput ] = useState('');
 
     useEffect(() => {
@@ -28,13 +28,13 @@ export const TranslationCard = (): JSX.Element => {
      return <>
          <div className={isWrong ? styles.wrong : styles.correct}>{input}</div>
          <div className={styles.emoji}>{isWrong ? '😔' : '🥳'}</div>
-         <div className={styles.comment}>{isWrong ? 'The word stays in the training set and will be presented later again.' : 'Yey! The word is added to the archive.'}</div>
+         <div className={styles.comment}>{ !isArchive && <>{isWrong ? 'The word stays in the training set and will be presented later again.' : 'Yey! The word is added to the archive.'}</>}</div>
      </>
     };
 
     return (
         <IndexCard>
-            <IndexCardSide variant={Variants.FRONT}>
+            <IndexCardSide variant={Variants.FRONT} className={styles.translationCard}>
                 { state === PractiseStates.INITIAL || state === PractiseStates.TO_VERIFY ?
                     renderInput() : renderResult()
                 }
