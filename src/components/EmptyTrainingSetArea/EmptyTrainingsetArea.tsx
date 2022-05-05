@@ -3,6 +3,7 @@ import {IndexCard} from "../IndexCard/IndexCard";
 import {IndexCardSide, Variants} from "../IndexCard/IndexCardSide/IndexCardSide";
 import classnames from "classnames";
 import styles from './EmptyTrainingSetArea.module.scss';
+import {Button} from "../Button/Button";
 
 export const EmptyTrainingsetArea = (): JSX.Element => {
     return (
@@ -10,6 +11,7 @@ export const EmptyTrainingsetArea = (): JSX.Element => {
             <IndexCard>
                 <IndexCardSide variant={Variants.FRONT}>
                     <div>No words in training set</div>
+                    <div className={styles.refreshButton}><Button onClick={()=>window.location.reload()} title={"Refresh"}>⟲</Button></div>
                 </IndexCardSide>
             </IndexCard>
             <div className={classnames("column", styles.infoBox)}>

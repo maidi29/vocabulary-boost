@@ -1,7 +1,18 @@
 @use '../../theme';
 
+.refreshButton {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+}
+
 .infoBox {
   background-color: theme.$colorTertiary;
   color: theme.$colorTertiaryText;
   padding: 2rem;
+  width: 50vw;
+  max-width: 35rem;
+  @media screen and (max-width: 770px) {
+    width: calc(100vw - 2rem);
+  }
 }

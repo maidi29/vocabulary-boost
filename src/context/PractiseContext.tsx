@@ -56,7 +56,7 @@ export const PractiseContextProvider: FC = ({children}) => {
     const [ index, setIndex ] = useState<number>();
 
     const updateActiveWord = () => {
-        if (trainingSet.length > 0) {
+        if (trainingSet && trainingSet.length > 0) {
             const newIndex = getRandomWithOneExclusion(trainingSet.length, trainingSet.length > 1 ? index : undefined);
             setIndex(newIndex);
             setWord(trainingSet[newIndex]);
