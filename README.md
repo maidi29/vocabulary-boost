@@ -15,7 +15,7 @@ Use this Extension: [Link]
 
 ## Available Scripts
 
-Don't forget to add an API_KEY for deepl to your .env file.
+Don't forget to add an API_KEY for DeepL to your .env file.
 
 ### `npm run watch`
 Rebuild the app on every change. Go to chrome://extensions/ and click "Load unpacked extension". Select the build folder that gets updated on every change. 
