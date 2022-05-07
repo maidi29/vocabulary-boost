@@ -12,7 +12,7 @@ export const Outro = (): JSX.Element => {
         <div className={classnames("column", styles.bottomRow)}>
             <div className="row"><span>Native Language: {language ? getFlagEmoji(language) : 'not set'}</span>
                 <Link onClick={()=>setModalIsOpen(true)}>Change</Link></div>
-            <div><a href="https://www.buymeacoffee.com/maidi" className={styles.donutLink}>🍩 Buy me a donut</a></div>
+            <div><a target="_blank" href="https://www.buymeacoffee.com/maidi" className={styles.donutLink}>🍩 Buy me a donut</a></div>
         </div>
     );
 }

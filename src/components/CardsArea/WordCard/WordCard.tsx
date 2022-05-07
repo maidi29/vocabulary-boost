@@ -38,7 +38,7 @@ export const WordCard = (): JSX.Element => {
                     <div className={styles.language}>{getFlagEmoji('en')}</div>
                     <div>{word?.word}</div>
                     <div className={styles.text}>{formatSentence(word.sentence, word.word)}</div>
-                    <div className={styles.reference}>Learned at <a
+                    <div className={styles.reference}>Learned at <a target="_blank"
                         href={word?.occurance}>{word?.occurance.substring(0, 50)}{word?.occurance.length > 51 && '...'}</a>
                     </div>
                     {state !== PractiseStates.INITIAL &&
@@ -50,7 +50,7 @@ export const WordCard = (): JSX.Element => {
                     <div
                         className={classnames(state === PractiseStates.WRONG && styles.wrong, state === PractiseStates.CORRECT && styles.correct)}>{word?.translation}</div>
                     <div className={styles.text}>{formatSentence(word.sentenceTranslation, word.translation)}</div>
-                    <div className={styles.reference}>Learned at <a
+                    <div className={styles.reference}>Learned at <a target="_blank"
                         href={word?.occurance}>{word?.occurance.substring(0, 50)}{word?.occurance.length > 51 && '...'}</a>
                     </div>
                     <button className={styles.flipButton} onClick={() => setFlipped(!flipped)} title="Flip">↩</button>
