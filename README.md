@@ -5,7 +5,7 @@ Chrome Extension that translates english words on every website on CTRL + double
 
 You can then practise these words with index cards.
 
-Use this Extension: [Link]
+Use this Extension: [https://chrome.google.com/webstore/detail/vocabulary-boost/gpbngmnbmnejehkiaehdfojeimnighlj](https://chrome.google.com/webstore/detail/vocabulary-boost/gpbngmnbmnejehkiaehdfojeimnighlj)
 
 ## Examples
 ![Example 1](https://github.com/maidi29/vocabulary-boost/blob/main/sources%20for%20webstore%20entry/screenshot-resized.png?raw=true)
