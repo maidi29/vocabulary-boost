@@ -5,7 +5,7 @@ Chrome Extension that translates english words on every website on CTRL + double
 
 You can then practise these words with index cards.
 
-Use this Extension: [Link]
+Use this Extension: [https://chrome.google.com/webstore/detail/vocabulary-boost/gpbngmnbmnejehkiaehdfojeimnighlj](https://chrome.google.com/webstore/detail/vocabulary-boost/gpbngmnbmnejehkiaehdfojeimnighlj)
 
 ## Examples
 ![Example 1](https://github.com/maidi29/vocabulary-boost/blob/main/sources%20for%20webstore%20entry/screenshot-resized.png?raw=true)
@@ -15,7 +15,7 @@ Use this Extension: [Link]
 
 ## Available Scripts
 
-Don't forget to add an API_KEY for deepl to your .env file.
+Don't forget to add an API_KEY for DeepL to your .env file.
 
 ### `npm run watch`
 Rebuild the app on every change. Go to chrome://extensions/ and click "Load unpacked extension". Select the build folder that gets updated on every change. 
