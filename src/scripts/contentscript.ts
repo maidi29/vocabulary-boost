@@ -1,9 +1,13 @@
-import {requestTranslation, updateTrainingSetInStorage, waitForStorage} from "./util";
-import {Languages} from "../model/Languages";
+import {
+  requestTranslation,
+  updateTrainingSetInStorage,
+  waitForStorage,
+} from "./util";
+import { Languages } from "../model/Languages";
 
-const id = 'vocabulary-boost-overlay';
-const closeId = 'vocabulary-boost-close';
-const addId = 'vocabulary-boost-add';
+const id = "vocabulary-boost-overlay";
+const closeId = "vocabulary-boost-close";
+const addId = "vocabulary-boost-add";
 
 const getTooltipStyle = (boundingRect: DOMRect): string => `
         position: absolute; 
@@ -37,90 +41,117 @@ const getTooltipHTML = (translation: string): string => `
             padding: 7px 15px;
             border: none;
             cursor: pointer;
-        ">Add to training set</button>`
+        ">Add to training set</button>`;
 
-
-const sentenceCloser = new RegExp('[!?.]');
+const sentenceCloser = new RegExp("[!?.]");
 let ctrlKeyPressed = false;
 
 const firstIndex = (str: string, regex: RegExp): number => {
-    const match = str.match(regex);
-    return match ? str.indexOf(match[0]) : -1;
-}
+  const match = str.match(regex);
+  return match ? str.indexOf(match[0]) : -1;
+};
 
 const lastIndex = (str: string, regex: RegExp): number => {
-    const match = str.match(regex);
-    return match ? str.lastIndexOf(match[match.length-1]) : -1;
-}
+  const match = str.match(regex);
+  return match ? str.lastIndexOf(match[match.length - 1]) : -1;
+};
 
-const addToTrainingSetClicked = async (word: string, translation: string, sentence: string): Promise<void> => {
-    document.getElementById(id)?.remove();
-    const lang = await waitForStorage('language') as Languages || Languages.DE;
-    requestTranslation(sentence, (response) => {
-        updateTrainingSetInStorage({
-            occurance: window.location.href,
-            sentence,
-            sentenceTranslation: response?.translations[0].text || "",
-            translation,
-            word,
-            language: lang
-        })
+const addToTrainingSetClicked = async (
+  word: string,
+  translation: string,
+  sentence: string
+): Promise<void> => {
+  document.getElementById(id)?.remove();
+  const lang =
+    ((await waitForStorage("language")) as Languages) || Languages.DE;
+  requestTranslation(sentence, (response) => {
+    updateTrainingSetInStorage({
+      occurance: window.location.href,
+      sentence,
+      sentenceTranslation: response?.translations[0].text || "",
+      translation,
+      word,
+      language: lang,
     });
-}
+  });
+};
 
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey) {
-        ctrlKeyPressed = true;
+document.addEventListener("keydown", (e) => {
+  if (e.ctrlKey) {
+    ctrlKeyPressed = true;
+  }
+});
+document.addEventListener("keyup", (e) => {
+  if (e.ctrlKey) {
+    ctrlKeyPressed = false;
+  }
+});
+
+document.addEventListener("dblclick", () => {
+  if (ctrlKeyPressed) {
+    const selection = window.getSelection();
+    const word = selection
+      ?.toString()
+      .split(" ")[0]
+      .replace(new RegExp(/[.,;?!()]/g), "");
+    const range = selection?.getRangeAt(0);
+    const boundingRect = range?.getBoundingClientRect();
+
+    const startContainer = range?.startContainer as Text;
+
+    const textBefore = startContainer?.wholeText?.substring(
+      0,
+      range?.startOffset
+    );
+    const sentenceBefore = textBefore
+      ?.substring(lastIndex(textBefore, sentenceCloser) + 1)
+      .trim();
+
+    const textAfter = startContainer?.wholeText?.substring(
+      range?.endOffset || 0
+    );
+    const firstSentenceCloser = firstIndex(textAfter, sentenceCloser);
+    const sentenceAfter = textAfter
+      ?.substring(
+        0,
+        firstSentenceCloser !== -1 ? firstSentenceCloser + 1 : undefined
+      )
+      .trim();
+    const sentence = [sentenceBefore, word, sentenceAfter]
+      .join(" ")
+      .substring(0, 150);
+
+    if (word && word.length < 50 && boundingRect) {
+      requestTranslation(word, (response) => {
+        const translation = response?.translations[0].text;
+        showTooltip(boundingRect, translation, sentence, word);
+      });
     }
-})
-document.addEventListener('keyup', (e) => {
-    if (e.ctrlKey) {
-        ctrlKeyPressed = false;
-    }
-})
+  }
+});
 
-document.addEventListener('dblclick', () => {
-        if (ctrlKeyPressed) {
-            const selection = window.getSelection();
-            const word = selection?.toString().split(' ')[0]
-                .replace(new RegExp(/[.,;?!()]/g), '');
-            const range = selection?.getRangeAt(0);
-            const boundingRect = range?.getBoundingClientRect();
+const showTooltip = (
+  boundingRect: DOMRect,
+  translation: string,
+  sentence: string,
+  word: string
+): void => {
+  document.getElementById(id)?.remove();
 
-            const startContainer = range?.startContainer as Text;
-
-            const textBefore = startContainer?.wholeText?.substring(0, range?.startOffset);
-            const sentenceBefore = textBefore?.substring(lastIndex(textBefore, sentenceCloser) + 1).trim();
-
-            const textAfter = startContainer?.wholeText?.substring(range?.endOffset || 0);
-            const firstSentenceCloser = firstIndex(textAfter, sentenceCloser);
-            const sentenceAfter = textAfter?.substring(0, firstSentenceCloser !== -1 ? firstSentenceCloser + 1 : undefined).trim();
-            const sentence = [sentenceBefore, word, sentenceAfter].join(' ').substring(0, 150);
-
-
-            if (word && word.length < 50 && boundingRect) {
-                requestTranslation(word, (response) => {
-                    const translation = response?.translations[0].text;
-                    showTooltip(boundingRect, translation, sentence, word);
-                });
-            }
-        }
-    }
-);
-
-const showTooltip = (boundingRect: DOMRect, translation: string, sentence: string, word: string): void => {
+  const tooltip = document.createElement("div");
+  tooltip.setAttribute("id", id);
+  tooltip.setAttribute("style", getTooltipStyle(boundingRect));
+  tooltip.innerHTML = getTooltipHTML(translation);
+  console.log(tooltip);
+  document.body.appendChild(tooltip);
+  document
+    .getElementById(addId)
+    ?.addEventListener("click", () =>
+      addToTrainingSetClicked(word, translation, sentence)
+    );
+  document.getElementById(closeId)?.addEventListener("click", () => {
     document.getElementById(id)?.remove();
-
-    const tooltip = document.createElement('div');
-    tooltip.setAttribute('id', id);
-    tooltip.setAttribute('style', getTooltipStyle(boundingRect))
-    tooltip.innerHTML = getTooltipHTML(translation);
-    console.log(tooltip);
-    document.body.appendChild(tooltip);
-    document.getElementById(addId)?.addEventListener("click", () => addToTrainingSetClicked(word,translation,sentence));
-    document.getElementById(closeId)?.addEventListener("click", function(){
-        document.getElementById(id)?.remove();
-    });
-}
+  });
+};
 
 export {};
