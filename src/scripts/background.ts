@@ -28,11 +28,7 @@ const fetchTranslation = async (word: string) => {
   const fetchUrl = url.toString();
 
   return await fetch(fetchUrl, {
-    method: "post",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
+    method: "POST",
   })
     .then((response) => response.json())
     .catch((error) => console.log("error", error));
