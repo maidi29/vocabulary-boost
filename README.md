@@ -3,7 +3,7 @@
 
 Chrome Extension that translates english words on every website on CTRL + double click and lets you add these words to your training set.
 
-You can then practise these words with index cards.
+You can then practise these words with flashcards.
 
 Use this Extension: [https://chrome.google.com/webstore/detail/vocabulary-boost/gpbngmnbmnejehkiaehdfojeimnighlj](https://chrome.google.com/webstore/detail/vocabulary-boost/gpbngmnbmnejehkiaehdfojeimnighlj)
 
