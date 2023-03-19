@@ -23,6 +23,7 @@ export const LanguageModal = (): JSX.Element => {
       shouldCloseOnOverlayClick={!!language}
       shouldCloseOnEsc={!!language}
       contentLabel="Select language"
+      bodyOpenClassName="fixed"
     >
       <form
         className={styles.languageForm}

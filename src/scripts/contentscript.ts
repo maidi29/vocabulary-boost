@@ -97,29 +97,22 @@ document.addEventListener("dblclick", () => {
     const range = selection?.getRangeAt(0);
     const boundingRect = range?.getBoundingClientRect();
 
-    const startContainer = range?.startContainer as Text;
-
-    const textBefore = startContainer?.wholeText?.substring(
-      0,
-      range?.startOffset
-    );
+    const wholeText = selection?.focusNode?.parentElement?.textContent;
+    const textBefore = wholeText?.substring(0, range?.startOffset);
     const sentenceBefore = textBefore
       ?.substring(lastIndex(textBefore, sentenceCloser) + 1)
       .trim();
 
-    const textAfter = startContainer?.wholeText?.substring(
-      range?.endOffset || 0
-    );
+    const textAfter = wholeText?.substring(range?.endOffset || 0) || "";
     const firstSentenceCloser = firstIndex(textAfter, sentenceCloser);
     const sentenceAfter = textAfter
-      ?.substring(
-        0,
-        firstSentenceCloser !== -1 ? firstSentenceCloser + 1 : undefined
-      )
+      ?.substring(0, firstSentenceCloser !== -1 ? firstSentenceCloser + 1 : undefined)
       .trim();
-    const sentence = [sentenceBefore, word, sentenceAfter]
-      .join(" ")
-      .substring(0, 150);
+
+    let sentence = [sentenceBefore, word, sentenceAfter].join(" ");
+    if(sentence.length > 200) {
+      sentence = sentence.substring(0, 200) + "...";
+    }
 
     if (word && word.length < 50 && boundingRect) {
       requestTranslation(word, (response) => {

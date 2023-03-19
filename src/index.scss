@@ -17,6 +17,10 @@ body {
   color: theme.$colorSecondaryText;
   line-height: 1;
   font-size: 1rem;
+
+  &.fixed {
+    position: fixed;
+  }
 }
 
 * {

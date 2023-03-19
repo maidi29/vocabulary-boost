@@ -1,7 +1,7 @@
 {
   "name": "Vocabulary Boost",
   "description": "Get instant translations for unknown english words while surfing. Practice the words later and expand your vocabulary this way.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "manifest_version": 3,
   "icons": {
     "16": "icon16.png",

@@ -34,6 +34,10 @@ export const languages = [
     name: "日本語",
   },
   {
+    code: Languages.KO,
+    name: "한국어",
+  },
+  {
     code: Languages.FR,
     name: "Français",
   },
@@ -52,6 +56,10 @@ export const languages = [
   {
     code: Languages.NL,
     name: "Nederlands",
+  },
+  {
+    code: Languages.NB,
+    name: "Norwegian (Bokmål)"
   },
   {
     code: Languages.PL,
