@@ -1,7 +1,7 @@
 # Vocabulary Boost 🚀
 ![Banner](https://github.com/maidi29/vocabulary-boost/blob/main/sources%20for%20webstore%20entry/1400x560.png?raw=true)
 
-Chrome Extension that translates english words on every website on CTRL (⌘ Cmd on Mac) + double click and lets you add these words to your training set.
+Chrome Extension that translates english words on every website on CTRL (⌘ Cmd on Mac) + double click or via the right-click menu and lets you add these words to your training set.
 
 You can then practise these words with flashcards.
 

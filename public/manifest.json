@@ -1,7 +1,7 @@
 {
   "name": "Vocabulary Boost",
   "description": "Get instant translations for unknown english words while surfing. Practice the words later and expand your vocabulary this way.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "manifest_version": 3,
   "icons": {
     "16": "icon16.png",
@@ -20,7 +20,8 @@
   }],
   "action": {},
   "permissions": [
-    "storage"
+    "storage",
+    "contextMenus"
   ],
   "host_permissions": [
     "https://api-free.deepl.com/*"

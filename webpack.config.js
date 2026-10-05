@@ -26,7 +26,8 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
-            'process.env': JSON.stringify(process.env)
+            // Only expose what the scripts need, not the whole build environment
+            'process.env.API_KEY': JSON.stringify(process.env.API_KEY)
         })
     ]
 }

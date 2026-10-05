@@ -34,8 +34,9 @@ export const EmptyTrainingsetArea = (): JSX.Element => {
           </div>
         </h1>
         <div>(Ctrl / ⌘ Cmd + Double Click)</div>
+        <div>or select a word, right-click and choose "Translate with Vocabulary Boost",</div>
         <div>
-          see the translation and click the button "Add to training set".
+          then see the translation and click the button "Add to training set".
         </div>
       </div>
     </div>

@@ -1,8 +1,27 @@
 import { waitForStorage } from "./util";
 
+const translateMenuId = "vocabulary-boost-translate";
+
 chrome.runtime.onInstalled.addListener((object) => {
   if (object.reason === chrome.runtime.OnInstalledReason.INSTALL) {
     chrome.tabs.create({ url: chrome.runtime.getURL("index.html") });
+  }
+  chrome.contextMenus.removeAll(() => {
+    chrome.contextMenus.create({
+      id: translateMenuId,
+      title: 'Translate "%s" with Vocabulary Boost',
+      contexts: ["selection"],
+    });
+  });
+});
+
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === translateMenuId && tab?.id !== undefined) {
+    chrome.tabs.sendMessage(
+      tab.id,
+      { type: "translateSelection" },
+      { frameId: info.frameId }
+    );
   }
 });
 

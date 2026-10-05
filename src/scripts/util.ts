@@ -66,7 +66,7 @@ export const removeFromTrainingSetInStorage = (word: Word): Promise<void> => {
       },
       (data) => {
         const index = data.trainingSet.findIndex(
-          (w: Word) => word.word === w.word && word.sentence === word.sentence
+          (w: Word) => word.word === w.word && word.sentence === w.sentence
         );
         if (index > -1) {
           data.trainingSet.splice(index, 1);

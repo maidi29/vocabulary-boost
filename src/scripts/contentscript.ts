@@ -79,39 +79,53 @@ const addToTrainingSetClicked = async (
 // Listening on window in the capture phase runs before page handlers that might stop propagation.
 window.addEventListener("dblclick", (e) => {
   if (e.ctrlKey || e.metaKey) {
-    const selection = window.getSelection();
-    const word = selection
-      ?.toString()
-      .split(" ")[0]
-      .replace(new RegExp(/[.,;?!()]/g), "");
-    const range = selection?.getRangeAt(0);
-    const boundingRect = range?.getBoundingClientRect();
-
-    const wholeText = selection?.focusNode?.parentElement?.textContent;
-    const textBefore = wholeText?.substring(0, range?.startOffset);
-    const sentenceBefore = textBefore
-      ?.substring(lastIndex(textBefore, sentenceCloser) + 1)
-      .trim();
-
-    const textAfter = wholeText?.substring(range?.endOffset || 0) || "";
-    const firstSentenceCloser = firstIndex(textAfter, sentenceCloser);
-    const sentenceAfter = textAfter
-      ?.substring(0, firstSentenceCloser !== -1 ? firstSentenceCloser + 1 : undefined)
-      .trim();
-
-    let sentence = [sentenceBefore, word, sentenceAfter].join(" ");
-    if(sentence.length > 200) {
-      sentence = sentence.substring(0, 200) + "...";
-    }
-
-    if (word && word.length < 50 && boundingRect) {
-      requestTranslation(word, (response) => {
-        const translation = response?.translations[0].text;
-        showTooltip(boundingRect, translation, sentence, word);
-      });
-    }
+    translateSelection();
   }
 }, true);
+
+// Triggered by the "Translate with Vocabulary Boost" context menu item (see background.ts)
+chrome.runtime.onMessage.addListener((request) => {
+  if (request.type === "translateSelection") {
+    translateSelection();
+  }
+});
+
+const translateSelection = (): void => {
+  const selection = window.getSelection();
+  if (!selection || selection.rangeCount === 0) {
+    return;
+  }
+  const word = selection
+    ?.toString()
+    .split(" ")[0]
+    .replace(new RegExp(/[.,;?!()]/g), "");
+  const range = selection?.getRangeAt(0);
+  const boundingRect = range?.getBoundingClientRect();
+
+  const wholeText = selection?.focusNode?.parentElement?.textContent;
+  const textBefore = wholeText?.substring(0, range?.startOffset);
+  const sentenceBefore = textBefore
+    ?.substring(lastIndex(textBefore, sentenceCloser) + 1)
+    .trim();
+
+  const textAfter = wholeText?.substring(range?.endOffset || 0) || "";
+  const firstSentenceCloser = firstIndex(textAfter, sentenceCloser);
+  const sentenceAfter = textAfter
+    ?.substring(0, firstSentenceCloser !== -1 ? firstSentenceCloser + 1 : undefined)
+    .trim();
+
+  let sentence = [sentenceBefore, word, sentenceAfter].join(" ");
+  if(sentence.length > 200) {
+    sentence = sentence.substring(0, 200) + "...";
+  }
+
+  if (word && word.length < 50 && boundingRect) {
+    requestTranslation(word, (response) => {
+      const translation = response?.translations[0].text;
+      showTooltip(boundingRect, translation, sentence, word);
+    });
+  }
+};
 
 const showTooltip = (
   boundingRect: DOMRect,
