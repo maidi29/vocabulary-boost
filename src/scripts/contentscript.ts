@@ -16,7 +16,7 @@ const getTooltipStyle = (boundingRect: DOMRect): string => `
         background: white; 
         transform: translate(0, -100%); 
         padding: 12px;
-        z-index: 1000;
+        z-index: 2147483647;
         box-shadow: 2px 2px 5px -1px #333;
         color: #333;
         font-size: 16px;
@@ -44,7 +44,6 @@ const getTooltipHTML = (translation: string): string => `
         ">Add to training set</button>`;
 
 const sentenceCloser = new RegExp("[!?.]");
-let ctrlKeyPressed = false;
 
 const firstIndex = (str: string, regex: RegExp): number => {
   const match = str.match(regex);
@@ -76,19 +75,10 @@ const addToTrainingSetClicked = async (
   });
 };
 
-document.addEventListener("keydown", (e) => {
-  if (e.ctrlKey) {
-    ctrlKeyPressed = true;
-  }
-});
-document.addEventListener("keyup", (e) => {
-  if (e.ctrlKey) {
-    ctrlKeyPressed = false;
-  }
-});
-
-document.addEventListener("dblclick", () => {
-  if (ctrlKeyPressed) {
+// On macOS Ctrl + click opens the context menu, so Cmd (metaKey) is accepted as well.
+// Listening on window in the capture phase runs before page handlers that might stop propagation.
+window.addEventListener("dblclick", (e) => {
+  if (e.ctrlKey || e.metaKey) {
     const selection = window.getSelection();
     const word = selection
       ?.toString()
@@ -121,7 +111,7 @@ document.addEventListener("dblclick", () => {
       });
     }
   }
-});
+}, true);
 
 const showTooltip = (
   boundingRect: DOMRect,

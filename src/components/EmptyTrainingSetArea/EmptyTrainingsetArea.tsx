@@ -33,7 +33,7 @@ export const EmptyTrainingsetArea = (): JSX.Element => {
             <img src="./images/icons/click.png" />
           </div>
         </h1>
-        <div>(Ctrl + Double Click)</div>
+        <div>(Ctrl / ⌘ Cmd + Double Click)</div>
         <div>
           see the translation and click the button "Add to training set".
         </div>
